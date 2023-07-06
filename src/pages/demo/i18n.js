@@ -1,16 +1,16 @@
 module.exports = {
   messages: {
     CN: {
-      content: '演示页面',
-      description: '这是一个演示页面'
+      content: '欢迎来到管理系统',
+      description: '欢迎来到管理系统'
     },
     HK: {
-      content: '演示頁面',
-      description: '這是一個演示頁面'
+      content: '欢迎来到管理系统',
+      description: '欢迎来到管理系统'
     },
     US: {
-      content: 'Demo Page',
-      description: 'This is a demo page'
+      content: 'Welcome to admin',
+      description: 'Welcome to admin'
     }
   }
 }

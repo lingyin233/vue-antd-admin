@@ -17,7 +17,7 @@
                 autocomplete="autocomplete"
                 size="large"
                 placeholder="admin"
-                v-decorator="['username', {rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]"
+                v-decorator="['name', {rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]"
               >
                 <a-icon slot="prefix" type="user" />
               </a-input>
@@ -74,11 +74,11 @@
 </template>
 
 <script>
-import CommonLayout from '@/layouts/CommonLayout'
-import {login, getRoutesConfig} from '@/services/user'
-import {setAuthorization} from '@/utils/request'
-import {loadRoutes} from '@/utils/routerUtil'
-import {mapMutations} from 'vuex'
+import CommonLayout from '@/layouts/CommonLayout';
+import {login, getRoutesConfig} from '@/services/user';
+import {setAuthorization} from '@/utils/request';
+import {loadRoutes} from '@/utils/routerUtil';
+import {mapMutations} from 'vuex';
 
 export default {
   name: 'Login',
@@ -88,29 +88,29 @@ export default {
       logging: false,
       error: '',
       form: this.$form.createForm(this)
-    }
+    };
   },
   computed: {
     systemName () {
-      return this.$store.state.setting.systemName
+      return this.$store.state.setting.systemName;
     }
   },
   methods: {
     ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
     onSubmit (e) {
-      e.preventDefault()
+      e.preventDefault();
       this.form.validateFields((err) => {
         if (!err) {
-          this.logging = true
-          const name = this.form.getFieldValue('name')
-          const password = this.form.getFieldValue('password')
-          login(name, password).then(this.afterLogin)
+          this.logging = true;
+          const name = this.form.getFieldValue('name');
+          const password = this.form.getFieldValue('password');
+          login(name, password).then(this.afterLogin);
         }
-      })
+      });
     },
     afterLogin(res) {
-      this.logging = false
-      const loginRes = res.data
+      this.logging = false;
+      const loginRes = res.data;
       if (loginRes.code == 200) {
         // const {user, permissions, roles} = loginRes.data
         this.setUser({
@@ -119,9 +119,9 @@ export default {
           address: 'SZ',
           position: '@'
         });
-        this.setPermissions([{id: 'queryForm', operation: ['add', 'edit']}])
-        this.setRoles([{id: 'admin', operation: ['add', 'edit', 'delete']}])
-        setAuthorization({token: +new Date(), expireAt: 90})
+        this.setPermissions([{id: 'queryForm', operation: ['add', 'edit']}]);
+        this.setRoles([{id: 'admin', operation: ['add', 'edit', 'delete']}]);
+        setAuthorization({token: +new Date(), expireAt: 90});
         // 获取路由配置
         // getRoutesConfig().then(result => {
         //   const routesConfig = result.data.data
@@ -129,17 +129,17 @@ export default {
         //   this.$router.push('/demo')
         //   this.$message.success(loginRes.message, 3)
         // })
-        this.$message.success('登录成功', 3)
-        this.$router.push('/demo');
+        this.$message.success('登录成功', 3);
+        this.$router.push('/dashboard/workplace');
       } else {
-        this.error = loginRes.message
+        this.error = loginRes.message;
       }
     },
     onClose() {
-      this.error = false
+      this.error = false;
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

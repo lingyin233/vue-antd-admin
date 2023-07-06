@@ -1,13 +1,13 @@
-import TabsView from '@/layouts/tabs/TabsView'
-import BlankView from '@/layouts/BlankView'
-import PageView from '@/layouts/PageView'
+import TabsView from '@/layouts/tabs/TabsView';
+import BlankView from '@/layouts/BlankView';
+import PageView from '@/layouts/PageView';
 
 // 路由配置
 const options = {
   routes: [
     {
       path: '/login',
-      name: '登录页',
+      name: 'login',
       component: () => import('@/pages/login')
     },
     {
@@ -22,18 +22,10 @@ const options = {
     },
     {
       path: '/',
-      name: '首页',
+      name: 'index',
       component: TabsView,
       redirect: '/login',
       children: [
-        {
-          path: '/demo',
-          name: '首页',
-          meta: {
-            icon: 'dashboard'
-          },
-          component: () => import('@/pages/demo/Demo'),
-        },
         {
           path: 'dashboard',
           name: 'Dashboard',
@@ -43,13 +35,26 @@ const options = {
           component: BlankView,
           children: [{
             path: 'workplace',
-            name: '工作台',
+            name: '欢迎页',
             component: () => import('@/pages/demo/Demo'),
+          }]
+        },
+        {
+          path: 'users',
+          name: '用户管理',
+          meta: {
+            icon: 'user'
+          },
+          component: BlankView,
+          children: [{
+            path: 'list',
+            name: '用户列表',
+            component: () => import('@/pages/user/User')
           }]
         }
       ]
     }
   ]
-}
+};
 
-export default options
+export default options;
