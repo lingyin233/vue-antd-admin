@@ -1,4 +1,4 @@
-import userService from './user'
+import userService from './user';
 
 export {
   userService

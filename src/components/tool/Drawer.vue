@@ -20,7 +20,7 @@ export default {
   name: 'Drawer',
   data () {
     return {
-    }
+    };
   },
   model: {
     prop: 'visible',
@@ -45,16 +45,16 @@ export default {
   },
   methods: {
     open () {
-      this.$emit('change', true)
+      this.$emit('change', true);
     },
     close () {
-      this.$emit('change', false)
+      this.$emit('change', false);
     },
     toggle () {
-      this.$emit('change', !this.visible)
+      this.$emit('change', !this.visible);
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

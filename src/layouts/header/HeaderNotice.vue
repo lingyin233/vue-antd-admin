@@ -47,24 +47,24 @@ export default {
     return {
       loading: false,
       show: false
-    }
+    };
   },
   computed: {
   },
   methods: {
     fetchNotice () {
       if (this.loading) {
-        this.loading = false
-        return
+        this.loading = false;
+        return;
       }
-			if (this.show) return
-      this.loading = true
+      if (this.show) return;
+      this.loading = true;
       setTimeout(() => {
-        this.loading = false
-      }, 1000)
+        this.loading = false;
+      }, 1000);
     }
   }
-}
+};
 </script>
 
 <style lang="less">

@@ -13,4 +13,4 @@ module.exports = {
       description: 'Welcome to admin'
     }
   }
-}
+};

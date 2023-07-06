@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import AdminHeader from './header/AdminHeader'
-import PageFooter from './footer/PageFooter'
-import Drawer from '../components/tool/Drawer'
-import SideMenu from '../components/menu/SideMenu'
-import Setting from '../components/setting/Setting'
-import {mapState, mapMutations, mapGetters} from 'vuex'
+import AdminHeader from './header/AdminHeader';
+import PageFooter from './footer/PageFooter';
+import Drawer from '../components/tool/Drawer';
+import SideMenu from '../components/menu/SideMenu';
+import Setting from '../components/setting/Setting';
+import {mapState, mapMutations, mapGetters} from 'vuex';
 
 // const minHeight = window.innerHeight - 64 - 122
 
@@ -45,23 +45,23 @@ export default {
       collapsed: false,
       showSetting: false,
       drawerOpen: false
-    }
+    };
   },
   provide() {
     return {
       adminLayout: this
-    }
+    };
   },
   watch: {
     $route(val) {
-      this.setActivated(val)
+      this.setActivated(val);
     },
     layout() {
-      this.setActivated(this.$route)
+      this.setActivated(this.$route);
     },
     isMobile(val) {
       if(!val) {
-        this.drawerOpen = false
+        this.drawerOpen = false;
       }
     }
   },
@@ -70,52 +70,52 @@ export default {
       'fixedTabs', 'hideSetting', 'multiPage']),
     ...mapGetters('setting', ['firstMenu', 'subMenu', 'menuData']),
     sideMenuWidth() {
-      return this.collapsed ? '80px' : '256px'
+      return this.collapsed ? '80px' : '256px';
     },
     headerStyle() {
-      let width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%'
-      let position = this.fixedHeader ? 'fixed' : 'static'
-      return `width: ${width}; position: ${position};`
+      let width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%';
+      let position = this.fixedHeader ? 'fixed' : 'static';
+      return `width: ${width}; position: ${position};`;
     },
     headMenuData() {
-      const {layout, menuData, firstMenu} = this
-      return layout === 'mix' ? firstMenu : menuData
+      const {layout, menuData, firstMenu} = this;
+      return layout === 'mix' ? firstMenu : menuData;
     },
     sideMenuData() {
-      const {layout, menuData, subMenu} = this
-      return layout === 'mix' ? subMenu : menuData
+      const {layout, menuData, subMenu} = this;
+      return layout === 'mix' ? subMenu : menuData;
     }
   },
   methods: {
     ...mapMutations('setting', ['correctPageMinHeight', 'setActivatedFirst']),
     toggleCollapse () {
-      this.collapsed = !this.collapsed
+      this.collapsed = !this.collapsed;
     },
     onMenuSelect () {
-      this.toggleCollapse()
+      this.toggleCollapse();
     },
     setActivated(route) {
       if (this.layout === 'mix') {
-        let matched = route.matched
-        matched = matched.slice(0, matched.length - 1)
-        const {firstMenu} = this
+        let matched = route.matched;
+        matched = matched.slice(0, matched.length - 1);
+        const {firstMenu} = this;
         for (let menu of firstMenu) {
           if (matched.findIndex(item => item.path === menu.fullPath) !== -1) {
-            this.setActivatedFirst(menu.fullPath)
-            break
+            this.setActivatedFirst(menu.fullPath);
+            break;
           }
         }
       }
     }
   },
   created() {
-    this.correctPageMinHeight(this.minHeight - 24)
-    this.setActivated(this.$route)
+    this.correctPageMinHeight(this.minHeight - 24);
+    this.setActivated(this.$route);
   },
   beforeDestroy() {
-    this.correctPageMinHeight(-this.minHeight + 24)
+    this.correctPageMinHeight(-this.minHeight + 24);
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

@@ -6,7 +6,7 @@
 
 <script>
 import PageToggleTransition from '../components/transition/PageToggleTransition';
-import {mapState} from 'vuex'
+import {mapState} from 'vuex';
 
 export default {
   name: 'BlankView',
@@ -14,7 +14,7 @@ export default {
   computed: {
     ...mapState('setting', ['multiPage', 'animate'])
   }
-}
+};
 </script>
 
 <style scoped>

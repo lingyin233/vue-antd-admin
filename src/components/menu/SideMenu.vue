@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import IMenu from './menu'
-import {mapState} from 'vuex'
+import IMenu from './menu';
+import {mapState} from 'vuex';
 export default {
   name: 'SideMenu',
   components: {IMenu},
@@ -39,16 +39,16 @@ export default {
   },
   computed: {
     sideTheme() {
-      return this.theme == 'light' ? this.theme : 'dark'
+      return this.theme == 'light' ? this.theme : 'dark';
     },
     ...mapState('setting', ['isMobile', 'systemName'])
   },
   methods: {
     onSelect (obj) {
-      this.$emit('menuSelect', obj)
+      this.$emit('menuSelect', obj);
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

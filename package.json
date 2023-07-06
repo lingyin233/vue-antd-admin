@@ -64,11 +64,12 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "no-debugger": "off",
-      "no-unused-vars": "off",
-      "vue/no-unused-vars": "off",
+      "no-debugger": 0,
+      "no-unused-vars": 0,
+      "vue/no-unused-vars": 0,
       "indent": ["error", 2],
-      "semi": ["error", "last"]
+      "semi": ["error", "always"],
+      "semi-style": ["error", "last"]
     }
   },
   "browserslist": [

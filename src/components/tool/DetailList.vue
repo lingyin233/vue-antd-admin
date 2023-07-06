@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ACol from 'ant-design-vue/es/grid/Col'
+import ACol from 'ant-design-vue/es/grid/Col';
 const Item = {
   name: 'DetailListItem',
   props: {
@@ -32,7 +32,7 @@ const Item = {
           }
         },
         [term]
-      ) : null
+      ) : null;
     },
     renderContent (h, content) {
       return h(
@@ -43,28 +43,28 @@ const Item = {
           }
         },
         [content]
-      )
+      );
     }
   },
   render (h) {
-    const term = this.renderTerm(h, this.$props.term)
-    const content = this.renderContent(h, this.$slots.default)
+    const term = this.renderTerm(h, this.$props.term);
+    const content = this.renderContent(h, this.$slots.default);
     return h(
       ACol,
       {
         props: responsive[this.col]
       },
       [term, content]
-    )
+    );
   }
-}
+};
 
 const responsive = {
   1: { xs: 24 },
   2: { xs: 24, sm: 12 },
   3: { xs: 24, sm: 12, md: 8 },
   4: { xs: 24, sm: 12, md: 6 }
-}
+};
 
 export default {
   name: 'DetailList',
@@ -93,9 +93,9 @@ export default {
   provide () {
     return {
       col: this.col > 4 ? 4 : this.col
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="less">

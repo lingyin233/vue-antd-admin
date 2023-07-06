@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState} from 'vuex';
 export default {
   name: 'PageHeader',
   props: {
@@ -52,7 +52,7 @@ export default {
   computed: {
     ...mapState('setting', ['layout', 'showPageTitle', 'pageWidth'])
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

@@ -27,79 +27,79 @@
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex'
-  import {getI18nKey} from '@/utils/routerUtil'
+import {mapState, mapMutations} from 'vuex';
+import {getI18nKey} from '@/utils/routerUtil';
 
-  export default {
-    name: 'TabsHead',
-    i18n: {
-      messages: {
-        CN: {
-          lock: '点击锁定页签头',
-          unlock: '点击解除锁定',
-        },
-        HK: {
-          lock: '點擊鎖定頁簽頭',
-          unlock: '點擊解除鎖定',
-        },
-        US: {
-          lock: 'click to lock the tabs head',
-          unlock: 'click to unlock',
-        }
-      }
-    },
-    props: {
-      pageList: Array,
-      active: String,
-      fixed: Boolean
-    },
-    data() {
-      return {
-        affixed: false,
-      }
-    },
-    inject:['adminLayout'],
-    created() {
-      this.affixed = this.fixedTabs
-    },
-    computed: {
-      ...mapState('setting', ['layout', 'pageWidth', 'fixedHeader', 'fixedTabs', 'customTitles']),
-      lockTitle() {
-        return this.$t(this.fixedTabs ? 'unlock' : 'lock')
-      }
-    },
-    methods: {
-      ...mapMutations('setting', ['setFixedTabs']),
-      onLockClick() {
-        this.setFixedTabs(!this.fixedTabs)
-        if (this.fixedTabs) {
-          setTimeout(() => {
-            this.affixed = true
-          }, 200)
-        } else {
-          this.affixed = false
-        }
+export default {
+  name: 'TabsHead',
+  i18n: {
+    messages: {
+      CN: {
+        lock: '点击锁定页签头',
+        unlock: '点击解除锁定',
       },
-      onTabClick(key) {
-        if (this.active !== key) {
-          this.$emit('change', key)
-        }
+      HK: {
+        lock: '點擊鎖定頁簽頭',
+        unlock: '點擊解除鎖定',
       },
-      onClose(key) {
-        this.$emit('close', key)
-      },
-      onRefresh(page) {
-        this.$emit('refresh', page.path, page)
-      },
-      onContextmenu(pageKey, e) {
-        this.$emit('contextmenu', pageKey, e)
-      },
-      pageName(page) {
-        const custom = this.customTitles.find(item => item.path === page.path)
-        return (custom && custom.title) || page.title || this.$t(getI18nKey(page.keyPath))
+      US: {
+        lock: 'click to lock the tabs head',
+        unlock: 'click to unlock',
       }
     }
+  },
+  props: {
+    pageList: Array,
+    active: String,
+    fixed: Boolean
+  },
+  data() {
+    return {
+      affixed: false,
+    };
+  },
+  inject:['adminLayout'],
+  created() {
+    this.affixed = this.fixedTabs;
+  },
+  computed: {
+    ...mapState('setting', ['layout', 'pageWidth', 'fixedHeader', 'fixedTabs', 'customTitles']),
+    lockTitle() {
+      return this.$t(this.fixedTabs ? 'unlock' : 'lock');
+    }
+  },
+  methods: {
+    ...mapMutations('setting', ['setFixedTabs']),
+    onLockClick() {
+      this.setFixedTabs(!this.fixedTabs);
+      if (this.fixedTabs) {
+        setTimeout(() => {
+          this.affixed = true;
+        }, 200);
+      } else {
+        this.affixed = false;
+      }
+    },
+    onTabClick(key) {
+      if (this.active !== key) {
+        this.$emit('change', key);
+      }
+    },
+    onClose(key) {
+      this.$emit('close', key);
+    },
+    onRefresh(page) {
+      this.$emit('refresh', page.path, page);
+    },
+    onContextmenu(pageKey, e) {
+      this.$emit('contextmenu', pageKey, e);
+    },
+    pageName(page) {
+      const custom = this.customTitles.find(item => item.path === page.path);
+      return (custom && custom.title) || page.title || this.$t(getI18nKey(page.keyPath));
+    }
   }
+};
 </script>
 
 <style scoped lang="less">

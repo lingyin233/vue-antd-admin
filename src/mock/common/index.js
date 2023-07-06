@@ -5,7 +5,7 @@ const avatars = [
   'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png',
   'https://gw.alipayobjects.com/zos/rmsportal/ubnKSIfAJTxIgXOKlciN.png',
   'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
-]
+];
 
 const positions = [
   {
@@ -25,8 +25,8 @@ const positions = [
     HK: '產品分析師 | 螞蟻金服-計算服務事業群-IOS平台部',
     US: 'Product analyst | Ant Financial - Computing services business group - IOS platform division'
   }
-]
+];
 
-const admins = ['ICZER', 'JACK', 'LUIS', 'DAVID']
+const admins = ['ICZER', 'JACK', 'LUIS', 'DAVID'];
 
-export {positions, avatars, admins}
+export {positions, avatars, admins};

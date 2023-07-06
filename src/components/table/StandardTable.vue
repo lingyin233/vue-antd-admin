@@ -61,60 +61,60 @@ export default {
   data () {
     return {
       needTotalList: []
-    }
+    };
   },
   methods: {
     equals(record1, record2) {
       if (record1 === record2) {
-        return true
+        return true;
       }
-      const {rowKey} = this
+      const {rowKey} = this;
       if (rowKey && typeof rowKey === 'string') {
-        return record1[rowKey] === record2[rowKey]
+        return record1[rowKey] === record2[rowKey];
       } else if (rowKey && typeof rowKey === 'function') {
-        return rowKey(record1) === rowKey(record2)
+        return rowKey(record1) === rowKey(record2);
       }
-      return false
+      return false;
     },
     contains(arr, item) {
       if (!arr || arr.length === 0) {
-        return false
+        return false;
       }
-      const {equals} = this
+      const {equals} = this;
       for (let i = 0; i < arr.length; i++) {
         if (equals(arr[i], item)) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     },
     onSelectAll(selected, rows) {
-      const {getKey, contains} = this
-      const unselected = this.dataSource.filter(item => !contains(rows, item, this.rowKey))
-      const _selectedRows = this.selectedRows.filter(item => !contains(unselected, item, this.rowKey))
-      const set = {}
-      _selectedRows.forEach(item => set[getKey(item)] = item)
-      rows.forEach(item => set[getKey(item)] = item)
-      const _rows = Object.values(set)
-      this.$emit('update:selectedRows', _rows)
-      this.$emit('selectedRowChange', _rows.map(item => getKey(item)), _rows)
+      const {getKey, contains} = this;
+      const unselected = this.dataSource.filter(item => !contains(rows, item, this.rowKey));
+      const _selectedRows = this.selectedRows.filter(item => !contains(unselected, item, this.rowKey));
+      const set = {};
+      _selectedRows.forEach(item => set[getKey(item)] = item);
+      rows.forEach(item => set[getKey(item)] = item);
+      const _rows = Object.values(set);
+      this.$emit('update:selectedRows', _rows);
+      this.$emit('selectedRowChange', _rows.map(item => getKey(item)), _rows);
     },
     getKey(record) {
-      const {rowKey} = this
+      const {rowKey} = this;
       if (!rowKey || !record) {
-        return undefined
+        return undefined;
       }
       if (typeof rowKey === 'string') {
-        return record[rowKey]
+        return record[rowKey];
       } else {
-        return rowKey(record)
+        return rowKey(record);
       }
     },
     onSelect(record, selected) {
-      const {equals, selectedRows, getKey} = this
-      const _selectedRows = selected ? [...selectedRows, record] : selectedRows.filter(row => !equals(row, record))
-      this.$emit('update:selectedRows', _selectedRows)
-      this.$emit('selectedRowChange', _selectedRows.map(item => getKey(item)), _selectedRows)
+      const {equals, selectedRows, getKey} = this;
+      const _selectedRows = selected ? [...selectedRows, record] : selectedRows.filter(row => !equals(row, record));
+      this.$emit('update:selectedRows', _selectedRows);
+      this.$emit('selectedRowChange', _selectedRows.map(item => getKey(item)), _selectedRows);
     },
     initTotalList (columns) {
       return columns.filter(item => item.needTotal)
@@ -122,20 +122,20 @@ export default {
           return {
             ...item,
             total: 0
-          }
-        })
+          };
+        });
     },
     onClear() {
-      this.$emit('update:selectedRows', [])
-      this.$emit('selectedRowChange', [], [])
-      this.$emit('clear')
+      this.$emit('update:selectedRows', []);
+      this.$emit('selectedRowChange', [], []);
+      this.$emit('clear');
     },
     onChange(pagination, filters, sorter, {currentDataSource}) {
-      this.$emit('change', pagination, filters, sorter, {currentDataSource})
+      this.$emit('change', pagination, filters, sorter, {currentDataSource});
     }
   },
   created () {
-    this.needTotalList = this.initTotalList(this.columns)
+    this.needTotalList = this.initTotalList(this.columns);
   },
   watch: {
     selectedRows (selectedRows) {
@@ -143,25 +143,25 @@ export default {
         return {
           ...item,
           total: selectedRows.reduce((sum, val) => {
-            let v
+            let v;
             try{
               v = val[item.dataIndex] ? val[item.dataIndex] : eval(`val.${item.dataIndex}`);
             }catch(_){
               v = val[item.dataIndex];
             }
             v = !isNaN(parseFloat(v)) ? parseFloat(v) : 0;
-            return sum + v
+            return sum + v;
           }, 0)
-        }
-      })
+        };
+      });
     }
   },
   computed: {
     selectedRowKeys() {
-      return this.selectedRows.map(record => this.getKey(record))
+      return this.selectedRows.map(record => this.getKey(record));
     },
   }
-}
+};
 </script>
 
 <style scoped lang="less">

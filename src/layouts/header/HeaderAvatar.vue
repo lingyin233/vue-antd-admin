@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {logout} from '@/services/user'
+import {mapGetters} from 'vuex';
+import {logout} from '@/services/user';
 
 export default {
   name: 'HeaderAvatar',
@@ -35,13 +35,13 @@ export default {
     logout() {
       logout().then((res) => {
         if (res.data.code == 200) {
-          this.$message.success('退出成功')
+          this.$message.success('退出成功');
         }
-        this.$router.push('/login')
-      })
+        this.$router.push('/login');
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="less">

@@ -32,4 +32,4 @@ module.exports = {
     {link: '#', icon: '.'},
     {link: 'https://ant.design', name: 'Ant Design'}
   ],
-}
+};

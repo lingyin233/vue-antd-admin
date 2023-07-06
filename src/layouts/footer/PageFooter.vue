@@ -15,7 +15,7 @@
 export default {
   name: 'PageFooter',
   props: ['copyright', 'linkList']
-}
+};
 </script>
 
 <style lang="less" scoped>

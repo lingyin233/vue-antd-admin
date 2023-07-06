@@ -20,21 +20,21 @@
 </template>
 
 <script>
-  export default {
-    name: 'ActionSize',
-    props: ['value'],
-    inject: ['table'],
-    data() {
-      return {
-        selectedKeys: ['middle']
-      }
-    },
-    methods: {
-      onClick({key}) {
-        this.$emit('input', key)
-      }
+export default {
+  name: 'ActionSize',
+  props: ['value'],
+  inject: ['table'],
+  data() {
+    return {
+      selectedKeys: ['middle']
+    };
+  },
+  methods: {
+    onClick({key}) {
+      this.$emit('input', key);
     }
   }
+};
 </script>
 
 <style scoped lang="less">
