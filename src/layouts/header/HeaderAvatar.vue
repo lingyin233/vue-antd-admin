@@ -5,15 +5,15 @@
       <span class="name">{{user.name}}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
-      <a-menu-item>
+      <!-- <a-menu-item>
         <a-icon type="user" />
         <span>个人中心</span>
       </a-menu-item>
       <a-menu-item>
         <a-icon type="setting" />
         <span>设置</span>
-      </a-menu-item>
-      <a-menu-divider />
+      </a-menu-item> -->
+      <!-- <a-menu-divider /> -->
       <a-menu-item @click="logout">
         <a-icon style="margin-right: 8px;" type="poweroff" />
         <span>退出登录</span>
@@ -33,8 +33,12 @@ export default {
   },
   methods: {
     logout() {
-      logout()
-      this.$router.push('/login')
+      logout().then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success('退出成功')
+        }
+        this.$router.push('/login')
+      })
     }
   }
 }

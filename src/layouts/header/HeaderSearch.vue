@@ -1,6 +1,6 @@
 <template>
   <div class="header-search">
-    <a-icon type="search" class="search-icon" @click="enterSearchMode"/>
+    <!-- <a-icon type="search" class="search-icon" @click="enterSearchMode"/>
     <a-auto-complete
       ref="input"
       :getPopupContainer="e => {return e.parentNode || document.body}"
@@ -9,7 +9,7 @@
       placeholder="站内搜索"
       @blur="leaveSearchMode"
     >
-    </a-auto-complete>
+    </a-auto-complete> -->
   </div>
 </template>
 

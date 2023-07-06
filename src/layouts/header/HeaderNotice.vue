@@ -1,5 +1,6 @@
 <template>
-  <a-dropdown :trigger="['click']" v-model="show">
+  <div></div>
+  <!-- <a-dropdown :trigger="['click']" v-model="show">
     <div slot="overlay">
       <a-spin :spinning="loading">
         <a-tabs class="dropdown-tabs" :tabBarStyle="{textAlign: 'center'}" :style="{width: '297px'}">
@@ -36,7 +37,7 @@
         <a-icon :class="['header-notice-icon']" type="bell" />
       </a-badge>
     </span>
-  </a-dropdown>
+  </a-dropdown> -->
 </template>
 
 <script>

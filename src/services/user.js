@@ -1,5 +1,5 @@
-import {LOGIN, ROUTES} from '@/services/api'
-import {request, METHOD, removeAuthorization} from '@/utils/request'
+import { LOGIN, LOGOUT, ROUTES } from '@/services/api'
+import { request, METHOD, removeAuthorization } from '@/utils/request'
 
 /**
  * 登录服务
@@ -7,9 +7,9 @@ import {request, METHOD, removeAuthorization} from '@/utils/request'
  * @param password 账户密码
  * @returns {Promise<AxiosResponse<T>>}
  */
-export async function login(name, password) {
+export async function login(username, password) {
   return request(LOGIN, METHOD.POST, {
-    name: name,
+    username: username,
     password: password
   })
 }
@@ -22,10 +22,16 @@ export async function getRoutesConfig() {
  * 退出登录
  */
 export function logout() {
-  localStorage.removeItem(process.env.VUE_APP_ROUTES_KEY)
-  localStorage.removeItem(process.env.VUE_APP_PERMISSIONS_KEY)
-  localStorage.removeItem(process.env.VUE_APP_ROLES_KEY)
-  removeAuthorization()
+  return request(LOGOUT, METHOD.POST, {}).then((res) => {
+    if (res.data.code == 200) {
+      localStorage.removeItem(process.env.VUE_APP_ROUTES_KEY)
+      localStorage.removeItem(process.env.VUE_APP_PERMISSIONS_KEY)
+      localStorage.removeItem(process.env.VUE_APP_ROLES_KEY)
+      localStorage.removeItem(process.env.VUE_APP_USER_KEY)
+      removeAuthorization()
+    }
+    return res;
+  });
 }
 export default {
   login,

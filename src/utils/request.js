@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { de } from 'date-fns/locale'
 import Cookie from 'js-cookie'
 
 // 跨域认证信息 header 名
