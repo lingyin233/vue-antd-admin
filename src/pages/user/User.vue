@@ -1,12 +1,12 @@
 <template>
   <div class="new-page" :style="`min-height: ${pageMinHeight}px`">
     <a-card>
-      <a-form layout="horizontal">
+      <a-form layout="horizontal" :model="form">
         <div class="">
           <a-row>
             <a-col :md="8" :sm="24">
-              <a-form-item label="用户名" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-                <a-input :value="form.username" placeholder="请输入"></a-input>
+              <a-form-item name="username" label="用户名" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <a-input placeholder="请输入" v-model:value="form.username"></a-input>
               </a-form-item>
             </a-col>
           </a-row>
@@ -16,9 +16,9 @@
           <a-button style="margin-left: 8px" @click="resetForm()">重置</a-button>
         </span>
       </a-form>
-      <a-table :data-source="list" :columns="columns" :row-key="record => record.id" style="margin-top: 50px;">
+      <a-table :data-source="list" :columns="columns" :row-key="record => record.id" style="margin-top: 50px;" :pagination="false">
         <template slot="action" slot-scope="text, record">
-          <a slot="action" href="javascript:void(0);" @click="edit(record)">edit</a>
+          <router-link :to="{path:'/device/list', query:{userId: record.id, appId: record.appId}}">设备</router-link>
         </template>
       </a-table>
       <a-pagination style="margin-top: 5px;" :current="current" :page-size="pageSize" :page-size-options="pageSizeOptions"
@@ -41,10 +41,10 @@ export default {
       form: {
         username: ''
       },
+      total: 0,
       current: 1,
       pageSize: 10,
       pageSizeOptions: ['10', '20'],
-      total: 0,
       list: [],
       columns: [
         {
@@ -71,7 +71,9 @@ export default {
   },
   methods: {
     resetForm() {
-      this.form = {};
+      this.form = {
+        username: ''
+      };
     },
     showSizeChange(current, size) {
       console.log('current=', current, 'size=', size);
@@ -88,8 +90,8 @@ export default {
     queryListUser() {
       const that = this;
       listUser({ current: that.current, size: that.pageSize, ...that.form }).then((res) => {
-        console.log('listUser=', res.data);
         const r = res.data;
+        console.log('listUser=', r);
         if (r.code !== 200) {
           that.$message.error('error code ' + r.code);
           return;

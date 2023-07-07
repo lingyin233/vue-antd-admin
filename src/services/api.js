@@ -7,5 +7,7 @@ module.exports = {
   LOGIN: `${BASE_URL}/login/password`,
   LOGOUT: `${BASE_URL}/index/logout`,
   ROUTES: `${BASE_URL}/routes`,
-  USER_LIST: `${BASE_URL}/user/list`
+  USER_LIST: `${BASE_URL}/user/list`,
+  DEVICE_LIST: `${BASE_URL}/device/list`,
+  DEVICE_UNBIND: `${BASE_URL}/device/unbind`
 };

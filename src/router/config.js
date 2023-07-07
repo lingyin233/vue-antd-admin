@@ -51,6 +51,14 @@ const options = {
             name: '用户列表',
             component: () => import('@/pages/user/User')
           }]
+        },
+        {
+          path: 'device/list',
+          name: '设备列表',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/device/List')
         }
       ]
     }
