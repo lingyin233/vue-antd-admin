@@ -1,6 +1,5 @@
-import { LOGIN, LOGOUT, ROUTES, LIST_USER } from '@/services/api';
+import { LOGIN, LOGOUT, ROUTES, USER_LIST, USER_UPDATE_PASSWORD } from '@/services/api';
 import { request, METHOD, removeAuthorization } from '@/utils/request';
-import { USER_LIST } from './api';
 
 /**
  * 登录服务
@@ -39,9 +38,14 @@ export function listUser(param) {
   return request(USER_LIST, METHOD.GET, param);
 }
 
+export function updateUserPassword(param) {
+  return request(USER_UPDATE_PASSWORD, METHOD.POST, param);
+}
+
 export default {
   login,
   logout,
   getRoutesConfig,
   listUser,
+  updateUserPassword,
 };

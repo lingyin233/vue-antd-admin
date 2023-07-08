@@ -16,35 +16,34 @@
           <a-button style="margin-left: 8px" @click="resetForm()">重置</a-button>
         </span>
       </a-form>
-      <a-table :data-source="list" :columns="columns" :row-key="record => record.id" style="margin-top: 50px;" :pagination="false">
-        <template slot="action" slot-scope="text, record">
-          <router-link :to="{path:'/device/list', query:{userId: record.id, appId: record.appId}}">设备</router-link>
-        </template>
-      </a-table>
-      <a-pagination style="margin-top: 5px;" :current="current" :page-size="pageSize" :page-size-options="pageSizeOptions"
-        :total="total" show-size-changer @showSizeChange="showSizeChange" @change="changePage">
-        <template #buildOptionText="props">
-          <span v-if="props.value !== '50'">{{ props.value }}条/页</span>
-        </template>
-      </a-pagination>
+
+      <standard-table style="margin-top: 60px;" :columns="columns" :dataSource="list" @clear="onClear" :row-key="record => record.id"
+        @change="onChange" :pagination="{ ...pagination, onChange: onPageChange }" @selectedRowChange="onSelectChange">
+        <div slot="action" slot-scope="{text, record}">
+          <router-link :to="{ path: '/device/list', query: { userId: record.id, appId: record.appId } }">设备</router-link>
+        </div>
+      </standard-table>
     </a-card>
   </div>
 </template>
   
 <script>
+import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
 import { listUser } from '@/services/user';
 export default {
   name: 'User',
+  components: { StandardTable },
   data() {
     return {
       form: {
         username: ''
       },
-      total: 0,
-      current: 1,
-      pageSize: 10,
-      pageSizeOptions: ['10', '20'],
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+      },
       list: [],
       columns: [
         {
@@ -75,6 +74,23 @@ export default {
         username: ''
       };
     },
+    onPageChange(page, pageSize) {
+      this.pagination.current = page;
+      this.pagination.pageSize = pageSize;
+      this.queryListUser();
+    },
+    onClear() {
+      this.$message.info('您清空了勾选的所有行');
+    },
+    onStatusTitleClick() {
+      this.$message.info('你点击了状态栏表头');
+    },
+    onChange() {
+      this.$message.info('表格状态改变了');
+    },
+    onSelectChange() {
+      this.$message.info('选中行改变了');
+    },
     showSizeChange(current, size) {
       console.log('current=', current, 'size=', size);
       this.pageSize = size;
@@ -91,16 +107,13 @@ export default {
       const that = this;
       listUser({ current: that.current, size: that.pageSize, ...that.form }).then((res) => {
         const r = res.data;
-        console.log('listUser=', r);
-        if (r.code !== 200) {
-          that.$message.error('error code ' + r.code);
-          return;
-        }
         const data = r.data;
-        that.current = parseInt(data.current);
-        that.total = parseInt(data.total);
-        that.pageSize = parseInt(data.size);
         that.list = data.records;
+        that.pagination = {
+          current: parseInt(data.current),
+          pageSize: parseInt(data.size),
+          total: parseInt(data.total)
+        };
       });
     },
     edit(record) {

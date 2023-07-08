@@ -115,7 +115,7 @@ export default {
         // const {user, permissions, roles} = loginRes.data
         this.setUser({
           name: 'ADMIN',
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/gaOngJwsRYRaVAuXXcmB.png',
+          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
           address: 'SZ',
           position: '@'
         });

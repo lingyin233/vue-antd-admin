@@ -8,6 +8,10 @@ module.exports = {
   LOGOUT: `${BASE_URL}/index/logout`,
   ROUTES: `${BASE_URL}/routes`,
   USER_LIST: `${BASE_URL}/user/list`,
+  USER_UPDATE_PASSWORD: `${BASE_URL}/index/updatePassword`,
   DEVICE_LIST: `${BASE_URL}/device/list`,
-  DEVICE_UNBIND: `${BASE_URL}/device/unbind`
+  DEVICE_UNBIND: `${BASE_URL}/device/unbind`,
+  OEM_COMPANY_LIST: `${BASE_URL}/oem/company/list`,
+  OEM_COMPANY_ADD: `${BASE_URL}/oem/company/addOrUpdate`,
+  OEM_COMPANY_GET: `${BASE_URL}/oem/company/get`,
 };

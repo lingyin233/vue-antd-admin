@@ -23,6 +23,10 @@ const resp401 = {
           window.open(link.href, '_blank');
         },
       });
+    } else if (response.data.code === 404 || response.data.code === 400) {
+      message.error(response.data.message);
+    } else if (response.data.code !== 200) {
+      message.error('error code ' + response.data.code);
     }
     return response;
   },

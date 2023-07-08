@@ -59,6 +59,37 @@ const options = {
             invisible: true
           },
           component: () => import('@/pages/device/List')
+        },
+        {
+          path: 'company',
+          name: 'OEM厂商管理',
+          meta: {
+            icon: 'user'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '厂商列表',
+              component: () => import('@/pages/company/List')
+            },
+            {
+              path: 'add',
+              name: '添加OEM厂商',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/company/Add')
+            },
+            {
+              path: 'detail',
+              name: 'OEM厂商详情',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/company/Detail')
+            }
+          ]
         }
       ]
     }

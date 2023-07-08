@@ -3,7 +3,7 @@
     <a-card>
       <a-table :data-source="list" :columns="columns" :row-key="record => record.id" :pagination="false">
         <template slot="action" slot-scope="text, record">
-          <a-popconfirm title="确认解绑？" @confirm="unbind(record)" @cancel="cancel">
+          <a-popconfirm title="确认解绑？" @confirm="unbind(record)">
             <a-button type="primary">解绑</a-button>
           </a-popconfirm>
         </template>
@@ -65,10 +65,6 @@ export default {
     queryDevice() {
       listDevice({ userId: this.$route.query.userId, appId: this.$route.query.appId }).then((res) => {
         const r = res.data;
-        if (r.code !== 200) {
-          this.$message.error('error code ' + r.code);
-          return;
-        }
         const data = r.data;
         this.list = data.list;
       });
@@ -81,10 +77,6 @@ export default {
         serialNumber: record.serialNumber
       }).then((res) => {
         const r = res.data;
-        if (r.code !== 200) {
-          that.$message.error('error code ' + r.code);
-          return;
-        }
         that.$message.success('解绑成功', 1.5, function () {
           that.$router.push('/users/list');
         });
