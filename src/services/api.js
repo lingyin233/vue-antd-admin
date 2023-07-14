@@ -14,4 +14,6 @@ module.exports = {
   OEM_COMPANY_LIST: `${BASE_URL}/oem/company/list`,
   OEM_COMPANY_ADD: `${BASE_URL}/oem/company/addOrUpdate`,
   OEM_COMPANY_GET: `${BASE_URL}/oem/company/get`,
+  APPVERSION_ADD: `${BASE_URL}/appversion/add`,
+  APPVERSION_LIST: `${BASE_URL}/appversion/list`,
 };

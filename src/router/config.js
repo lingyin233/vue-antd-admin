@@ -90,6 +90,29 @@ const options = {
               component: () => import('@/pages/company/Detail')
             }
           ]
+        },
+        {
+          path: 'appversion',
+          name: 'APP版本管理',
+          meta: {
+            icon: 'user'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: 'APP版本列表',
+              component: () => import('@/pages/appversion/List')
+            },
+            {
+              path: 'add',
+              name: '添加APP版本',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/appversion/Add')
+            }
+          ]
         }
       ]
     }
