@@ -43,7 +43,7 @@ const options = {
           path: 'users',
           name: '用户管理',
           meta: {
-            icon: 'user'
+            icon: 'apple'
           },
           component: BlankView,
           children: [{
@@ -64,7 +64,7 @@ const options = {
           path: 'company',
           name: 'OEM厂商管理',
           meta: {
-            icon: 'user'
+            icon: 'apple'
           },
           component: BlankView,
           children: [
@@ -95,7 +95,7 @@ const options = {
           path: 'appversion',
           name: 'APP版本管理',
           meta: {
-            icon: 'user'
+            icon: 'apple'
           },
           component: BlankView,
           children: [
@@ -113,7 +113,80 @@ const options = {
               component: () => import('@/pages/appversion/Add')
             }
           ]
-        }
+        },
+        {
+          path: 'appearance',
+          name: '个人形象管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '个人形象列表',
+              component: () => import('@/pages/appearance/List')
+            },
+            {
+              path: 'add',
+              name: '添加个人形象',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/appearance/Add')
+            }
+          ]
+        },
+        {
+          path: 'feedback',
+          name: '意见反馈管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '意见反馈列表',
+              component: () => import('@/pages/feedback/List')
+            },
+          ]
+        },
+        {
+          path: 'skillinfo',
+          name: '技能描述管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '技能描述列表',
+              component: () => import('@/pages/skillinfo/List')
+            },
+            {
+              path: 'listGroup',
+              name: '技能分组列表',
+              component: () => import('@/pages/skillinfo/ListGroup')
+            },
+          ]
+        },
+        {
+          path: 'serial',
+          name: '序列号管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '序列号列表',
+              component: () => import('@/pages/serial/List')
+            },
+          ]
+        },
       ]
     }
   ]

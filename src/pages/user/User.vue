@@ -12,8 +12,8 @@
           </a-row>
         </div>
         <span style="float: left; margin-top: 3px;">
-          <a-button type="primary" @click="queryListUser()">查询</a-button>
-          <a-button style="margin-left: 8px" @click="resetForm()">重置</a-button>
+          <a-button type="primary" @click="queryList()">查询</a-button>
+          <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
         </span>
       </a-form>
 
@@ -69,15 +69,10 @@ export default {
     };
   },
   methods: {
-    resetForm() {
-      this.form = {
-        username: ''
-      };
-    },
     onPageChange(page, pageSize) {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
-      this.queryListUser();
+      this.queryList();
     },
     onClear() {
       this.$message.info('您清空了勾选的所有行');
@@ -94,16 +89,16 @@ export default {
     showSizeChange(current, size) {
       console.log('current=', current, 'size=', size);
       this.pageSize = size;
-      this.queryListUser();
+      this.queryList();
     },
     changePage(page, pageSize) {
       console.log('page=', page, 'pageSize=', pageSize);
-      this.queryListUser();
+      this.queryList();
     },
     init() {
-      this.queryListUser();
+      this.queryList();
     },
-    queryListUser() {
+    queryList() {
       const that = this;
       listUser({ current: that.current, size: that.pageSize, ...that.form }).then((res) => {
         const r = res.data;

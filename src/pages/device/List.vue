@@ -1,6 +1,11 @@
 <template>
   <div class="new-page" :style="`min-height: ${pageMinHeight}px`">
     <a-card>
+      <a-space class="operator">
+        <a-button type="primary" @click="$router.go(-1)">
+          返回
+        </a-button>
+      </a-space>
       <a-table :data-source="list" :columns="columns" :row-key="record => record.id" :pagination="false">
         <template slot="action" slot-scope="text, record">
           <a-popconfirm title="确认解绑？" @confirm="unbind(record)">
@@ -100,5 +105,9 @@ export default {
 
 .search {
   margin-bottom: 54px;
+}
+
+.operator {
+  margin-bottom: 18px;
 }
 </style>

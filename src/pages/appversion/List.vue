@@ -24,7 +24,7 @@
       <div style="margin-top: 50px;">
         <a-space class="operator">
           <a-button type="primary">
-            <router-link :to="{ path: '/appversion/add' }">新建</router-link>
+            <router-link :to="{ path: '/appversion/add' }">添加</router-link>
           </a-button>
         </a-space>
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
@@ -46,7 +46,7 @@ import { listAppVersion } from '@/services/appversion';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
-  name: 'CompanyList',
+  name: 'AppVersionList',
   components: { StandardTable },
   data() {
     return {

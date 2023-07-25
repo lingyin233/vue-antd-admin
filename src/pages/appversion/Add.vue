@@ -31,7 +31,7 @@ import { addAppVersion } from '@/services/appversion';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
-  name: 'CompanyAdd',
+  name: 'AppVersionAdd',
   data() {
     return {
       title: '添加APP版本',

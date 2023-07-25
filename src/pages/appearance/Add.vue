@@ -1,49 +1,30 @@
 <template>
   <div class="new-page" :style="`min-height: ${pageMinHeight}px`">
-    <a-space class="operator">
-      <a-button type="primary" @click="$router.go(-1)">
-        返回
-      </a-button>
-    </a-space>
     <a-card :title="title">
       <a-form>
-        <a-form-item label="用户名" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.username" placeholder="请输入" />
-        </a-form-item>
-        <a-form-item label="密码" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input-password v-model:value="form.password" placeholder="请输入" />
-        </a-form-item>
-        <a-form-item label="状态" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-select v-model:value="form['status']" placeholder="请选择" :options="statusList">
-          </a-select>
+        <a-form-item label="角色" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
+          <a-input v-model:value="form.roleId" placeholder="请输入" />
         </a-form-item>
         <a-form-item label="名称" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
           <a-input v-model:value="form.name" placeholder="请输入" />
         </a-form-item>
-        <a-form-item label="简称" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.shortName" placeholder="请输入" />
+        <a-form-item label="性别" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
+          <a-select v-model:value="form['gender']" placeholder="请选择" :options="genderList">
+          </a-select>
         </a-form-item>
-        <a-form-item label="logo" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.logo" disabled placeholder="请输入" />
-          <a-upload accept="image/*" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"
+        <a-form-item label="类型" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
+          <a-select v-model:value="form.type" placeholder="请选择" :options="typeList">
+          </a-select>
+        </a-form-item>
+        <a-form-item label="资源包" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
+          <a-input v-model:value="form.infoUrl" disabled placeholder="请输入" />
+          <a-upload accept=".zip" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"
             :customRequest="customRequest">
-            <a-button> <a-icon type="upload" /> 点击上传文件</a-button>
+            <a-button> <a-icon type="upload" /> 点击上传文件（仅支持zip格式）</a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item label="地址" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.address" placeholder="请输入" />
-        </a-form-item>
-        <a-form-item label="简介" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-textarea v-model:value="form.introduction" placeholder="请输入" />
-        </a-form-item>
-        <a-form-item label="联系电话" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.mobile" placeholder="请输入" />
-        </a-form-item>
-        <a-form-item label="联系邮箱" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.email" placeholder="请输入" />
-        </a-form-item>
         <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 12, offset: 2 }">
-          <a-button type="primary" @click="saveCompany()">保存</a-button>
+          <a-button type="primary" @click="saveAppearance()">保存</a-button>
           <a-button type="default" style="margin-left: 8px" @click="$router.go(-1)">返回</a-button>
         </a-form-item>
       </a-form>
@@ -53,50 +34,58 @@
         
 <script>
 import { mapState } from 'vuex';
-import { addCompany } from '@/services/company';
+import { addAppearance } from '@/services/appearance';
 import { qiniuUploadToken } from '@/services/common';
 import * as qiniu from 'qiniu-js';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
-  name: 'CompanyAdd',
+  name: 'AppearanceAdd',
   data() {
     return {
-      title: '添加OEM厂商',
+      title: '添加个人形象',
       form: {
-        username: null,
-        password: null,
-        status: 1,
-        name: null,
-        shortName: null,
-        logo: null,
-        address: null,
-        introduction: null,
-        mobile: null,
-        email: null,
+        roleId: '',
+        name: '',
+        gender: '',
+        infoUrl: '',
+        type: '',
       },
-      statusList: [
-        { value: 0, label: '未审核' },
-        { value: 1, label: '审核通过' },
-        { value: 2, label: '审核不通过' },
+      typeList: [
+        {
+          value: '0',
+          label: '默认'
+        }
       ],
-      module: 'company',
+      module: 'appearance2',
       fileList: [],
+      genderList: [
+        {
+          value: 1,
+          label: '男'
+        },
+        {
+          value: 2,
+          label: '女'
+        }
+      ]
     };
   },
   methods: {
     init() {
 
     },
-    saveCompany() {
+    saveAppearance() {
       const that = this;
-      addCompany({...that.form}).then((res) => {
+      addAppearance({...that.form}).then((res) => {
         const r = res.data;
-        if (r.code === 200) {
-          that.$message.success('添加成功', 1.5, () => {
-            that.$router.push('/company/list');
-          });
+        if (r.code !== 200) {
+          return;
         }
+        const data = r.data;
+        that.$message.success("保存成功", 1.5, () => {
+          that.$router.push("/appearance/list");
+        });
       });
     },
     handleRemove(file) {
@@ -145,7 +134,7 @@ export default {
       }
     },
     uploadCallback(url) {
-      this.form.logo = url;
+      this.form.infoUrl = url;
     },
   },
   created() {
@@ -162,7 +151,4 @@ export default {
         
 <style scoped lang="less">
 @import "index";
-.operator {
-  margin-bottom: 18px;
-}
 </style>

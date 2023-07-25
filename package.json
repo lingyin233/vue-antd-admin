@@ -21,6 +21,7 @@
     "js-cookie": "^2.2.1",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
+    "qiniu-js": "^3.4.1",
     "viser-vue": "^2.4.8",
     "vue": "^2.6.11",
     "vue-i18n": "^8.18.2",
@@ -68,9 +69,18 @@
       "no-unused-vars": 0,
       "vue/no-unused-vars": 0,
       "vue/valid-v-model": 0,
-      "indent": ["error", 2],
-      "semi": ["error", "always"],
-      "semi-style": ["error", "last"]
+      "indent": [
+        "error",
+        2
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "semi-style": [
+        "error",
+        "last"
+      ]
     }
   },
   "browserslist": [

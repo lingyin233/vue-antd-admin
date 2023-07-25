@@ -11,15 +11,15 @@
             </a-col>
           </a-row>
           <span style="margin-top: 3px;">
-            <a-button type="primary" @click="queryCompany()">查询</a-button>
-            <a-button style="margin-left: 8px" @click="resetForm()">重置</a-button>
+            <a-button type="primary" @click="queryList()">查询</a-button>
+            <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
           </span>
         </a-form>
       </div>
       <div style="margin-top: 50px;">
         <a-space class="operator">
           <a-button type="primary">
-            <router-link :to="{ path: '/company/add' }">新建</router-link>
+            <router-link :to="{ path: '/company/add' }">添加</router-link>
           </a-button>
         </a-space>
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
@@ -126,29 +126,24 @@ export default {
     };
   },
   methods: {
-    resetForm() {
-      this.form = {
-        name: ''
-      };
-    },
     onPageChange(page, pageSize) {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
-      this.queryCompany();
+      this.queryList();
     },
     showSizeChange(current, size) {
       console.log('current=', current, 'size=', size);
       this.pageSize = size;
-      this.queryCompany();
+      this.queryList();
     },
     changePage(page, pageSize) {
       console.log('page=', page, 'pageSize=', pageSize);
-      this.queryCompany();
+      this.queryList();
     },
     init() {
-      this.queryCompany();
+      this.queryList();
     },
-    queryCompany() {
+    queryList() {
       const that = this;
       listCompany({ current: that.pagination.current, size: that.pagination.pageSize, ...that.form }).then((res) => {
         const r = res.data;
