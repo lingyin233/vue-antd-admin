@@ -79,7 +79,6 @@ export default {
       updateUserPassword({ password: that.passwd.newpasswd }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
-          that.$message.error('error code ' + r.code);
           return;
         }
         that.updatePasswordVisible = false;
