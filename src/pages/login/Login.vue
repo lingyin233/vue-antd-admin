@@ -110,11 +110,12 @@ export default {
     },
     afterLogin(res) {
       this.logging = false;
-      const loginRes = res.data;
-      if (loginRes.code == 200) {
-        // const {user, permissions, roles} = loginRes.data
+      const r = res.data;
+      if (r.code == 200) {
+        const data = r.data;
+        // const {user, permissions, roles} = data.data
         this.setUser({
-          name: 'ADMIN',
+          name: data.name,
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
           address: 'SZ',
           position: '@'
@@ -127,12 +128,12 @@ export default {
         //   const routesConfig = result.data.data
         //   loadRoutes(routesConfig)
         //   this.$router.push('/demo')
-        //   this.$message.success(loginRes.message, 3)
+        //   this.$message.success(r.message, 3)
         // })
         this.$message.success('登录成功', 3);
         this.$router.push('/dashboard/workplace');
       } else {
-        this.error = loginRes.message;
+        this.error = r.message;
       }
     },
     onClose() {

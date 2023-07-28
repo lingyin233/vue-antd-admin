@@ -62,15 +62,9 @@ export default {
         this.$router.push('/login');
       });
     },
-    resetPasswd() {
-      this.passwd = {
-        newpasswd: '',
-        confirmpasswd: '',
-      };
-    },
     showUpdatePassword() {
       this.updatePasswordVisible = true;
-      this.resetPasswd();
+      this.$util.clearObject(this.passwd, true);
     },
     updatePassword() {
       const that = this;
@@ -88,8 +82,9 @@ export default {
           that.$message.error('error code ' + r.code);
           return;
         }
-        this.updatePasswordVisible = false;
-        this.resetPasswd();
+        that.updatePasswordVisible = false;
+        that.$message.success('更新密码成功');
+        that.$util.clearObject(that.passwd, true);
       });
     },
   }
