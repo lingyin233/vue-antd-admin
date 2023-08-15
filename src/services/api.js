@@ -33,4 +33,7 @@ module.exports = {
   SERIAL_LIST: `${BASE_URL}/serial/list`,
   SERIAL_GENERATE: `${BASE_URL}/serial/generate`,
   SERIAL_DEL: `${BASE_URL}/serial/del`,
+  APPUPDATE_LIST: `${BASE_URL}/app/update/list`,
+  APPUPDATE_ADD: `${BASE_URL}/app/update/add`,
+  APPUPDATE_DEL: `${BASE_URL}/app/update/del`,
 };

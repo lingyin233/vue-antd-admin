@@ -27,11 +27,13 @@
             <a-avatar size="large" :src="record.skillIcon"></a-avatar>
           </div>
           <div slot="action" slot-scope="{text, record}">
-            <a-button type="primary" @click="updateUI(record)" style="margin: 2px;">编辑</a-button>
-            <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 2px;">
-              <a-button type="primary">删除</a-button>
-            </a-popconfirm>
-            <a-button type="primary" @click="updateGroupCodeUI(record)" style="margin: 2px;">更新分组</a-button>
+            <div><a href="javascript:void(0);" type="primary" @click="updateUI(record)" style="margin: 2px;">编辑</a></div>
+            <div>
+              <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 2px;">
+                <a href="javascript:void(0);" type="primary">删除</a>
+              </a-popconfirm>
+            </div>
+            <div><a href="javascript:void(0);" type="primary" @click="updateGroupCodeUI(record)" style="margin: 2px;">更新分组</a></div>
           </div>
         </standard-table>
       </div>
@@ -181,6 +183,7 @@ export default {
           title: '操作',
           dataIndex: 'action',
           key: 'action',
+          width: 100,
           scopedSlots: { customRender: 'action' },
         },
       ]

@@ -91,9 +91,32 @@ const options = {
             }
           ]
         },
+        // {
+        //   path: 'appversion',
+        //   name: 'APP版本管理',
+        //   meta: {
+        //     icon: 'apple'
+        //   },
+        //   component: BlankView,
+        //   children: [
+        //     {
+        //       path: 'list',
+        //       name: 'APP版本列表',
+        //       component: () => import('@/pages/appversion/List')
+        //     },
+        //     {
+        //       path: 'add',
+        //       name: '添加APP版本',
+        //       meta: {
+        //         invisible: true
+        //       },
+        //       component: () => import('@/pages/appversion/Add')
+        //     }
+        //   ]
+        // },
         {
-          path: 'appversion',
-          name: 'APP版本管理',
+          path: 'appupdate',
+          name: 'APP更新管理',
           meta: {
             icon: 'apple'
           },
@@ -101,16 +124,8 @@ const options = {
           children: [
             {
               path: 'list',
-              name: 'APP版本列表',
-              component: () => import('@/pages/appversion/List')
-            },
-            {
-              path: 'add',
-              name: '添加APP版本',
-              meta: {
-                invisible: true
-              },
-              component: () => import('@/pages/appversion/Add')
+              name: 'APP更新列表',
+              component: () => import('@/pages/appupdate/List')
             }
           ]
         },

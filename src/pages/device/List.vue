@@ -9,7 +9,7 @@
       <a-table :data-source="list" :columns="columns" :row-key="record => record.id" :pagination="false">
         <template slot="action" slot-scope="text, record">
           <a-popconfirm title="确认解绑？" @confirm="unbind(record)">
-            <a-button type="primary">解绑</a-button>
+            <a href="javascript:void(0);" type="primary">解绑</a>
           </a-popconfirm>
         </template>
       </a-table>

@@ -10,9 +10,9 @@
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
           :pagination="{ ...pagination, onChange: onPageChange }">
           <div slot="action" slot-scope="{text, record}">
-            <a-button type="primary" @click="updateUI(record)" style="margin-right: 5px;">编辑</a-button>
+            <a href="javascript:void(0);" type="primary" @click="updateUI(record)" style="margin-right: 5px;">编辑</a>
             <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin-right: 5px;">
-              <a-button type="primary">删除</a-button>
+              <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
           </div>
         </standard-table>

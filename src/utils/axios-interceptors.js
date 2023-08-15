@@ -12,7 +12,7 @@ const resp401 = {
     if (response.code === 401) {
       message.error('无此权限');
     }
-    if (response.data.code === 1000) {
+    if (response.data.code === 401) {
       console.log('axios not login 1');
       modal.confirm({
         title: '提示',
@@ -42,7 +42,7 @@ const resp401 = {
     if (response.status === 401) {
       message.error('无此权限');
     }
-    if (response.data.code === 1000) {
+    if (response.data.code === 401) {
       console.log('axios not login 2');
       modal.confirm({
         title: '提示',

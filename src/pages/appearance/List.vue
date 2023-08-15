@@ -45,7 +45,7 @@
           </div>
           <div slot="action" slot-scope="{text, record}">
             <a-popconfirm title="确认删除？" @confirm="del(record)">
-              <a-button type="primary">删除</a-button>
+              <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
           </div>
         </standard-table>

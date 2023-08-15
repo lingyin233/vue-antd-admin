@@ -32,7 +32,7 @@
           :pagination="{ ...pagination, onChange: onPageChange }">
           <div slot="action" slot-scope="{text, record}">
             <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 2px;">
-              <a-button type="primary">删除</a-button>
+              <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
           </div>
         </standard-table>

@@ -39,7 +39,7 @@
             <a-tag color="#52c41a" v-if="record.status == 1">已答复</a-tag>
           </div>
           <div slot="action" slot-scope="{text, record}">
-            <a-button type="primary" @click="updateUI(record)">回复</a-button>
+            <a href="javascript:void(0);" type="primary" @click="updateUI(record)">回复</a>
           </div>
         </standard-table>
       </div>
