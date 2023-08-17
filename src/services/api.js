@@ -36,4 +36,5 @@ module.exports = {
   APPUPDATE_LIST: `${BASE_URL}/app/update/list`,
   APPUPDATE_ADD: `${BASE_URL}/app/update/add`,
   APPUPDATE_DEL: `${BASE_URL}/app/update/del`,
+  APPUPDATE_PUSHSTATE: `${BASE_URL}/app/update/pushState`,
 };

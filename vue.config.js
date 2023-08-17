@@ -38,7 +38,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/obexxadmin': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
-        target: 'http://localhost:8002/obexxadmin',
+        target: 'http://127.0.0.1:8002/obexxadmin',
+        // target: 'http://192.168.0.220/obexxadmin',
         changeOrigin: true,
         pathRewrite: {
           '^/obexxadmin': ''

@@ -27,6 +27,8 @@
             <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 2px;">
               <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
+            <a v-if="record.push == 0" href="javascript:void(0);" @click="push(record)">开启推送</a>
+            <a v-else href="javascript:void(0);" @click="push(record)">关闭推送</a>
           </div>
         </standard-table>
       </div>
@@ -66,8 +68,10 @@
           <a-input v-model:value="updateUIForm['hashValue']" placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item name="force" label="是否强制升级" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateUIForm['force']" placeholder="请选择" :options="forceList">
-          </a-select>
+          <a-switch @change="forceChange" />
+        </a-form-item>
+        <a-form-item name="push" label="是否推送" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-switch @change="pushChange" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -77,7 +81,7 @@
 <script>
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
-import { listAppUpdate, addAppUpdate, delAppUpdate } from '@/services/appupdate';
+import { listAppUpdate, addAppUpdate, delAppUpdate, pushStateAppUpdate } from '@/services/appupdate';
 import { qiniuUploadToken } from '@/services/common';
 import * as qiniu from 'qiniu-js';
 import { Modal } from 'ant-design-vue';
@@ -101,17 +105,8 @@ export default {
         hashValue: null,
         force: null,
         url: null,
+        push: null,
       },
-      forceList: [
-        {
-          label: '是',
-          value: '1',
-        },
-        {
-          label: '否',
-          value: '0',
-        },
-      ],
       typeList: [
         {
           label: 'IOS',
@@ -180,6 +175,14 @@ export default {
           title: '是否强制升级',
           dataIndex: 'force',
           key: 'force',
+          customRender: (text, row, index) => {
+            return text == '1' ? '是' : text == '0' ? '否' : '';
+          }
+        },
+        {
+          title: '是否推送',
+          dataIndex: 'push',
+          key: 'push',
           customRender: (text, row, index) => {
             return text == '1' ? '是' : text == '0' ? '否' : '';
           }
@@ -258,6 +261,24 @@ export default {
       delAppUpdate({ id: record.id }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
+          return;
+        }
+        that.$message.success('操作成功', 1.5, () => {
+          that.init();
+        });
+      });
+    },
+    forceChange(checked) {
+      this.updateUIForm['force'] = checked ? 1 : 0;
+    },
+    pushChange(checked) {
+      this.updateUIForm['push'] = checked ? 1 : 0;
+    },
+    push(record) {
+      const that = this;
+      pushStateAppUpdate({id: record.id, push: record.push == 1 ? 0 : 1}).then((res) => {
+        const r = res.data;
+        if (r.code != 200) {
           return;
         }
         that.$message.success('操作成功', 1.5, () => {
