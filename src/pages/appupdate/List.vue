@@ -30,6 +30,9 @@
             <a v-if="record.push == 0" href="javascript:void(0);" @click="push(record)">开启推送</a>
             <a v-else href="javascript:void(0);" @click="push(record)">关闭推送</a>
           </div>
+          <div slot="expandedRowRender" slot-scope="{text, record}" style="margin: 0">
+            版本内容：{{ record.versionContent }}
+          </div>
         </standard-table>
       </div>
     </a-card>
@@ -103,9 +106,9 @@ export default {
         versionContent: null,
         appSize: null,
         hashValue: null,
-        force: null,
+        force: 0,
         url: null,
-        push: null,
+        push: 0,
       },
       typeList: [
         {
@@ -160,6 +163,7 @@ export default {
           title: '版本内容',
           dataIndex: 'versionContent',
           key: 'versionContent',
+          ellipsis: true,
         },
         {
           title: '大小',
@@ -276,7 +280,7 @@ export default {
     },
     push(record) {
       const that = this;
-      pushStateAppUpdate({id: record.id, push: record.push == 1 ? 0 : 1}).then((res) => {
+      pushStateAppUpdate({ id: record.id, push: record.push == 1 ? 0 : 1 }).then((res) => {
         const r = res.data;
         if (r.code != 200) {
           return;
