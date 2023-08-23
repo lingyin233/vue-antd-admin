@@ -105,6 +105,14 @@ export default {
           key: 'serialNumber',
         },
         {
+          title: '状态',
+          dataIndex: 'status',
+          key: 'status',
+          customRender: (text, row, index) => {
+            return parseInt(text) > 0 ? '已被' + text + '台设备绑定' : '未绑定设备';
+          }
+        },
+        {
           title: '创建时间',
           dataIndex: 'createTime',
           key: 'createTime',
