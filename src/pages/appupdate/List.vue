@@ -193,8 +193,8 @@ export default {
         },
         {
           title: '创建时间',
-          dataIndex: 'createdTime',
-          key: 'createdTime',
+          dataIndex: 'createTime',
+          key: 'createTime',
           customRender: (text, row, index) => {
             return moment(text).format('YYYY-MM-DD HH:mm');
           }
