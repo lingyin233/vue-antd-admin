@@ -24,14 +24,14 @@
           </a-row>
           <span style="margin-top: 3px;">
             <a-button type="primary" @click="queryAppearance()">查询</a-button>
-            <a-button style="margin-left: 8px" @click="resetForm()">重置</a-button>
+            <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
           </span>
         </a-form>
       </div>
       <div style="margin-top: 50px;">
         <a-space class="operator">
-          <a-button type="primary">
-            <router-link :to="{ path: '/appearance/add' }">添加</router-link>
+          <a-button type="primary" @click="addUI">
+            添加
           </a-button>
         </a-space>
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
@@ -40,24 +40,70 @@
             <span v-if="record.gender == 1">男</span>
             <span v-else-if="record.gender == 2">女</span>
           </div>
+          <div slot="picUrl" slot-scope="{text, record}">
+            <img style="width: 50px; height: 80px;" :src="record.picUrl" />
+          </div>
           <div slot="type" slot-scope="{text, record}">
-            <span v-if="record.type == 0">默认</span>
+            <span v-if="record.type == 0">系统</span>
+            <span v-if="record.type == 1">常规</span>
+          </div>
+          <div slot="status" slot-scope="{text, record}">
+            <span v-if="record.status == 0">删除</span>
+            <span v-if="record.status == 1">正常</span>
           </div>
           <div slot="action" slot-scope="{text, record}">
+            <a href="javascript:void(0);" type="primary" @click="updateUI(record)">修改</a>&nbsp;
             <a-popconfirm title="确认删除？" @confirm="del(record)">
-              <a href="javascript:void(0);" type="primary">删除</a>
+              <a href="javascript:void(0);" type="primary">删除</a>&nbsp;
             </a-popconfirm>
           </div>
         </standard-table>
       </div>
     </a-card>
+    <a-modal v-model="updateUIVisible" title="添加或更新" @ok="saveAppearance" :maskClosable="false">
+      <a-form>
+        <a-form-item name="id" label="ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateForm['id']" disabled placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="roleId" label="角色" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateForm.roleId" placeholder="请输入" />
+        </a-form-item>
+        <a-form-item name="name" label="名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateForm.name" placeholder="请输入" />
+        </a-form-item>
+        <a-form-item name="gender" label="性别" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateForm['gender']" placeholder="请选择" :options="genderList">
+          </a-select>
+        </a-form-item>
+        <a-form-item name="type" label="类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateForm.type" placeholder="请选择" :options="typeList">
+          </a-select>
+        </a-form-item>
+        <a-form-item name="picUrl" label="图片" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateForm.picUrl" disabled placeholder="请输入" />
+          <a-upload accept="image/*" :file-list="fileList2" :data="{ type: 2 }" :remove="handleRemove"
+            :before-upload="beforeUpload2" :customRequest="customRequest">
+            <a-button> <a-icon type="upload" />点击上传图片</a-button>
+          </a-upload>
+        </a-form-item>
+        <a-form-item name="infoUrl" label="资源包" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateForm.infoUrl" disabled placeholder="请输入" />
+          <a-upload accept=".zip" :file-list="fileList" :data="{ type: 1 }" :remove="handleRemove"
+            :before-upload="beforeUpload" :customRequest="customRequest">
+            <a-button> <a-icon type="upload" />点击上传文件</a-button>
+          </a-upload>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
       
 <script>
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
-import { listAppearance, delAppearance } from '@/services/appearance';
+import { listAppearance, delAppearance, addAppearance } from '@/services/appearance';
+import { qiniuUploadToken } from '@/services/common';
+import * as qiniu from 'qiniu-js';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
@@ -65,6 +111,19 @@ export default {
   components: { StandardTable },
   data() {
     return {
+      updateUIVisible: false,
+      fileList2: [],
+      fileList: [],
+      module: 'appearance2',
+      updateForm: {
+        id: '',
+        roleId: '',
+        name: '',
+        gender: '',
+        infoUrl: '',
+        picUrl: '',
+        type: '',
+      },
       form: {
         name: '',
         gender: '',
@@ -72,7 +131,7 @@ export default {
       },
       genderList: [
         {
-          value: "",
+          value: '',
           label: "请选择"
         },
         {
@@ -91,7 +150,11 @@ export default {
         },
         {
           value: "0",
-          label: "默认"
+          label: "系统"
+        },
+        {
+          value: "1",
+          label: "常规"
         },
       ],
       pagination: {
@@ -123,7 +186,13 @@ export default {
           key: 'name',
         },
         {
-          title: '地址',
+          title: '图片地址',
+          dataIndex: 'picUrl',
+          key: 'picUrl',
+          scopedSlots: { customRender: 'picUrl' },
+        },
+        {
+          title: '文件地址',
           dataIndex: 'infoUrl',
           key: 'infoUrl',
         },
@@ -134,9 +203,15 @@ export default {
           scopedSlots: { customRender: 'type' },
         },
         {
+          title: '状态',
+          dataIndex: 'status',
+          key: 'status',
+          scopedSlots: { customRender: 'status' },
+        },
+        {
           title: '创建时间',
-          dataIndex: 'createdTime',
-          key: 'createdTime',
+          dataIndex: 'createTime',
+          key: 'createTime',
           customRender: (text, row, index) => {
             return moment(text).format('YYYY-MM-DD HH:mm');
           }
@@ -151,13 +226,6 @@ export default {
     };
   },
   methods: {
-    resetForm() {
-      this.form = {
-        name: '',
-        gender: '',
-        type: '',
-      };
-    },
     onPageChange(page, pageSize) {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
@@ -193,7 +261,7 @@ export default {
     },
     del(record) {
       const that = this;
-      delAppearance({id: record.id}).then((res) => {
+      delAppearance({ id: record.id }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
@@ -202,6 +270,89 @@ export default {
           that.init();
         });
       });
+    },
+    addUI() {
+      this.$util.clearObject(this.updateForm, true);
+      this.updateForm.type = '1';
+      this.updateUIVisible = true;
+    },
+    updateUI(record) {
+      this.$util.clearObject(this.updateForm, true);
+      this.$util.extend(true, this.updateForm, record);
+      this.updateForm['gender'] = record.gender + '';
+      this.updateUIVisible = true;
+    },
+    saveAppearance() {
+      const that = this;
+      addAppearance({ ...that.updateForm }).then((res) => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        that.$message.success("保存成功", 1.5, () => {
+          that.updateUIVisible = false;
+          that.init();
+        });
+      });
+    },
+    handleRemove(file) {
+      const index = this.fileList.indexOf(file);
+      const newFileList = this.fileList.slice();
+      newFileList.splice(index, 1);
+      this.fileList = newFileList;
+      console.log("handle remove file", newFileList);
+    },
+    beforeUpload2(file, fileList) {
+      this.fileList2 = fileList;
+      return true;
+    },
+    beforeUpload(file, fileList) {
+      this.fileList = fileList;
+      return true;
+    },
+    customRequest(data) {
+      console.log(data, "==== customRequest");
+      const that = this;
+      const file = data.file;
+      const type = data.data.type;
+      console.log(type, "==== type");
+      if (file) {
+        if (file.name.lastIndexOf(".") < 0) {
+          that.$message.error("文件格式不正确");
+          return;
+        }
+        const ext = file.name.substring(file.name.lastIndexOf("."));
+        qiniuUploadToken({ ext: ext, module: that.module }).then((res) => {
+          const r = res.data;
+          if (r.code !== 200) {
+            return;
+          }
+          const data = r.data;
+          console.log("upload token", data);
+          const token = data.token;
+          const host = data.host;
+          const fileKey = data.fileKey;
+          const observable = qiniu.upload(file, fileKey, token, {}, {});
+          const subscription = observable.subscribe((nextRes) => {
+            const total = nextRes.total;
+            console.log("next", total.loaded, total.total, total.percent);
+          }, (err) => {
+            console.log("error", err.code, err.message, err.isRequestError);
+          }, (completeRes) => {
+            console.log("complete", completeRes);
+            that.uploadCallback(host + "/" + completeRes.key, type);
+          });
+        });
+      } else {
+        console.error('没有选择文件');
+      }
+    },
+    uploadCallback(url, type) {
+      if (type == 2) {
+        this.updateForm.picUrl = url;
+      } else {
+        this.updateForm.infoUrl = url;
+      }
     },
   },
   created() {

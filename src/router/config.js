@@ -141,14 +141,6 @@ const options = {
               path: 'list',
               name: '个人形象列表',
               component: () => import('@/pages/appearance/List')
-            },
-            {
-              path: 'add',
-              name: '添加个人形象',
-              meta: {
-                invisible: true
-              },
-              component: () => import('@/pages/appearance/Add')
             }
           ]
         },
