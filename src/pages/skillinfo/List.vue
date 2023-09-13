@@ -52,6 +52,7 @@
             :customRequest="customRequest">
             <a-button> <a-icon type="upload" />点击上传文件</a-button>
           </a-upload>
+          <span>{{ percent }}</span>
         </a-form-item>
         <a-form-item name="skillShortDesc" label="技能简介" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['skillShortDesc']" placeholder="请输入"></a-input>

@@ -29,6 +29,7 @@
             :customRequest="customRequest">
             <a-button> <a-icon type="upload" /> 点击上传文件</a-button>
           </a-upload>
+          <span>{{ percent }}</span>
         </a-form-item>
         <a-form-item label="地址" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
           <a-input v-model:value="form.address" placeholder="请输入" />

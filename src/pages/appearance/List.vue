@@ -85,6 +85,7 @@
             :before-upload="beforeUpload2" :customRequest="customRequest">
             <a-button> <a-icon type="upload" />点击上传图片</a-button>
           </a-upload>
+          <span>{{ percent2 }}</span>
         </a-form-item>
         <a-form-item name="infoUrl" label="资源包" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateForm.infoUrl" disabled placeholder="请输入" />
@@ -92,6 +93,7 @@
             :before-upload="beforeUpload" :customRequest="customRequest">
             <a-button> <a-icon type="upload" />点击上传文件</a-button>
           </a-upload>
+          <span>{{ percent1 }}</span>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -115,7 +117,8 @@ export default {
       fileList2: [],
       fileList: [],
       module: 'appearance2',
-      percent: 0,
+      percent1: 0,
+      percent2: 0,
       updateForm: {
         id: '',
         roleId: '',
@@ -337,7 +340,11 @@ export default {
           const subscription = observable.subscribe((nextRes) => {
             const total = nextRes.total;
             console.log("next", total.loaded, total.total, total.percent);
-            that.percent = total.percent + "%";
+            if (type == 1) {
+              that.percent1 = total.percent + "%";
+            } else if (type == 2) {
+              that.percent2 = total.percent + "%";
+            }
           }, (err) => {
             console.log("error", err.code, err.message, err.isRequestError);
           }, (completeRes) => {
