@@ -76,6 +76,19 @@
         <a-form-item name="push" label="是否推送" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-switch @change="pushChange" />
         </a-form-item>
+        <a-form-item name="grayRelease" label="灰度" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateUIForm['grayRelease']" placeholder="请选择" :options="grayReleaseList">
+          </a-select>
+        </a-form-item>
+        <a-form-item name="grayReleaseJson" label="灰度sn, userId" :labelCol="{ span: 5 }"
+          :wrapperCol="{ span: 18, offset: 1 }">
+          <a-textarea v-model:value="updateUIForm['grayReleaseJson']" placeholder="请输入">
+          </a-textarea>
+        </a-form-item>
+        <a-form-item name="allowLowestVersion" label="允许最小版本" :labelCol="{ span: 5 }"
+          :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateUIForm['allowLowestVersion']" placeholder="请输入"></a-input>
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -109,7 +122,24 @@ export default {
         force: 0,
         url: null,
         push: 0,
+        grayRelease: 0,
+        grayReleaseJson: '{"grayid": ""}',
+        allowLowestVersion: 1,
       },
+      grayReleaseList: [
+        {
+          label: '无',
+          value: '0',
+        },
+        {
+          label: '白名单',
+          value: '1',
+        },
+        {
+          label: '比例',
+          value: '2',
+        },
+      ],
       typeList: [
         {
           label: 'IOS',
@@ -192,6 +222,19 @@ export default {
           }
         },
         {
+          title: '灰度',
+          dataIndex: 'grayRelease',
+          key: 'grayRelease',
+          customRender: (text, row, index) => {
+            return text == '0' ? '无' : text == '1' ? '白名单' : text == '2' ? '比例' : '';
+          }
+        },
+        {
+          title: '灰度配置',
+          dataIndex: 'grayReleaseJson',
+          key: 'grayReleaseJson',
+        },
+        {
           title: '创建时间',
           dataIndex: 'createTime',
           key: 'createTime',
@@ -244,6 +287,12 @@ export default {
     addUI() {
       const that = this;
       that.$util.clearObject(that.updateUIForm, true);
+      // 设置默认值
+      that.updateUIForm.force = 0;
+      that.updateUIForm.push = 0;
+      that.updateUIForm.grayRelease = '0';
+      that.updateUIForm.grayReleaseJson = '{"grayid": ""}';
+      that.updateUIForm.allowLowestVersion = 1;
       that.fileList = [];
       that.updateUIVisible = true;
     },
