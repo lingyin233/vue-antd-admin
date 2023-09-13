@@ -16,9 +16,8 @@
           <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
         </span>
       </a-form>
-
-      <standard-table style="margin-top: 60px;" :columns="columns" :dataSource="list" @clear="onClear" :row-key="record => record.id"
-        @change="onChange" :pagination="{ ...pagination, onChange: onPageChange }" @selectedRowChange="onSelectChange">
+      <standard-table style="margin-top: 60px;" :columns="columns" :dataSource="list" :row-key="record => record.id"
+        :pagination="{ ...pagination, onChange: onPageChange }">
         <div slot="action" slot-scope="{text, record}">
           <router-link :to="{ path: '/device/list', query: { userId: record.id, appId: record.appId } }">设备</router-link>
         </div>
@@ -74,18 +73,6 @@ export default {
       this.pagination.pageSize = pageSize;
       this.queryList();
     },
-    onClear() {
-      this.$message.info('您清空了勾选的所有行');
-    },
-    onStatusTitleClick() {
-      this.$message.info('你点击了状态栏表头');
-    },
-    onChange() {
-      this.$message.info('表格状态改变了');
-    },
-    onSelectChange() {
-      this.$message.info('选中行改变了');
-    },
     showSizeChange(current, size) {
       console.log('current=', current, 'size=', size);
       this.pageSize = size;
@@ -100,7 +87,7 @@ export default {
     },
     queryList() {
       const that = this;
-      listUser({ current: that.current, size: that.pageSize, ...that.form }).then((res) => {
+      listUser({ current: that.pagination.current, size: that.pagination.pageSize, ...that.form }).then((res) => {
         const r = res.data;
         const data = r.data;
         that.list = data.records;

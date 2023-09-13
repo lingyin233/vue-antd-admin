@@ -82,6 +82,7 @@ export default {
       ],
       module: 'company',
       fileList: [],
+      percent: 0,
     };
   },
   methods: {
@@ -133,6 +134,7 @@ export default {
           const subscription = observable.subscribe((nextRes) => {
             const total = nextRes.total;
             console.log("next", total.loaded, total.total, total.percent);
+            that.percent = total.percent + "%";
           }, (err) => {
             console.log("error", err.code, err.message, err.isRequestError);
           }, (completeRes) => {

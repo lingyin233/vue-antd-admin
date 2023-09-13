@@ -115,6 +115,7 @@ export default {
       fileList2: [],
       fileList: [],
       module: 'appearance2',
+      percent: 0,
       updateForm: {
         id: '',
         roleId: '',
@@ -336,6 +337,7 @@ export default {
           const subscription = observable.subscribe((nextRes) => {
             const total = nextRes.total;
             console.log("next", total.loaded, total.total, total.percent);
+            that.percent = total.percent + "%";
           }, (err) => {
             console.log("error", err.code, err.message, err.isRequestError);
           }, (completeRes) => {

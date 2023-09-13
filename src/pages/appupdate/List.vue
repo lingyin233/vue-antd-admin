@@ -31,7 +31,9 @@
             <a v-else href="javascript:void(0);" @click="push(record)">关闭推送</a>
           </div>
           <div slot="expandedRowRender" slot-scope="{text, record}" style="margin: 0">
-            版本内容：{{ record.versionContent }}
+            <div>版本内容：{{ record.versionContent }}</div>
+            <div>灰度配置：{{ record.grayReleaseJson }}</div>
+            <div>下载地址：{{ record.url }}</div>
           </div>
         </standard-table>
       </div>
@@ -63,6 +65,7 @@
             :customRequest="customRequest">
             <a-button> <a-icon type="upload" />点击上传文件</a-button>
           </a-upload>
+          <span>{{ percent }}</span>
         </a-form-item>
         <a-form-item name="appSize" label="APP大小" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['appSize']" placeholder="请输入"></a-input>
@@ -109,6 +112,7 @@ export default {
     return {
       module: 'appupdate',
       fileList: [],
+      percent: 0,
       updateUIVisible: false,
       updateUIForm: {
         id: null,
@@ -225,6 +229,7 @@ export default {
           title: '灰度',
           dataIndex: 'grayRelease',
           key: 'grayRelease',
+          ellipsis: true,
           customRender: (text, row, index) => {
             return text == '0' ? '无' : text == '1' ? '白名单' : text == '2' ? '比例' : '';
           }
@@ -373,6 +378,7 @@ export default {
           const subscription = observable.subscribe((nextRes) => {
             const total = nextRes.total;
             console.log("next", total.loaded, total.total, total.percent);
+            that.percent = total.percent + "%";
           }, (err) => {
             console.log("error", err.code, err.message, err.isRequestError);
           }, (completeRes) => {
