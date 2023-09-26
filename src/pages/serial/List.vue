@@ -27,6 +27,7 @@
       <div style="margin-top: 50px;">
         <a-space class="operator">
           <a-button type="primary" @click="addUI">生成序列号</a-button>
+          <a-button type="primary" @click="exportUI">导出序列号</a-button>
         </a-space>
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
           :pagination="{ ...pagination, onChange: onPageChange }">
@@ -57,7 +58,7 @@
 <script>
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
-import { listSerial, generateSerial, delSerial } from '@/services/serial';
+import { listSerial, exportSerialUrl, generateSerial, delSerial } from '@/services/serial';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
@@ -162,6 +163,10 @@ export default {
           pageSize: parseInt(data.size),
         };
       });
+    },
+    exportUI() {
+      const that = this;
+      window.open(exportSerialUrl({...that.form}));
     },
     addUI() {
       const that = this;

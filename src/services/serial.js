@@ -1,8 +1,13 @@
 import { request, METHOD } from '@/utils/request';
-import { SERIAL_LIST, SERIAL_GENERATE, SERIAL_DEL } from './api';
+import * as util from '@/utils/util';
+import { SERIAL_LIST, SERIAL_EXPORT, SERIAL_GENERATE, SERIAL_DEL } from './api';
 
 export function listSerial(param) {
   return request(SERIAL_LIST, METHOD.GET, param);
+}
+
+export function exportSerialUrl(param) {
+  return SERIAL_EXPORT + "?" + util.param(param);
 }
 
 export function generateSerial(param) {
@@ -15,6 +20,7 @@ export function delSerial(param) {
 
 export default {
   listSerial,
+  exportSerialUrl,
   generateSerial,
   delSerial,
 };
