@@ -28,6 +28,8 @@
         <a-space class="operator">
           <a-button type="primary" @click="addUI">生成序列号</a-button>
           <a-button type="primary" @click="exportUI">导出序列号</a-button>
+          <a-input v-model:value="validForm['serialNumber']" placeholder="请输入"></a-input>
+          <a-button type="primary" @click="validUI">校验序列号</a-button>
         </a-space>
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
           :pagination="{ ...pagination, onChange: onPageChange }">
@@ -58,7 +60,7 @@
 <script>
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
-import { listSerial, exportSerialUrl, generateSerial, delSerial } from '@/services/serial';
+import { listSerial, exportSerialUrl, generateSerial, delSerial, validSerial } from '@/services/serial';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
@@ -66,6 +68,9 @@ export default {
   components: { StandardTable },
   data() {
     return {
+      validForm: {
+        serialNumber: '',
+      },
       addUIVisible: false,
       addUIForm: {
         company: '',
@@ -162,6 +167,27 @@ export default {
           current: parseInt(data.current),
           pageSize: parseInt(data.size),
         };
+      });
+    },
+    validUI() {
+      const that = this;
+      if (!that.validForm.serialNumber || that.validForm.serialNumber.length != 15) {
+        that.$message.error('序列号格式不正确');
+        return;
+      }
+      validSerial({...that.validForm}).then((res) => {
+        const r = res.data;
+        if (r.code != 200) {
+          return;
+        }
+        const data = r.data;
+        if (data.valid == 0) {
+          that.$message.success('序列号正确');
+        } else if (data.valid == 1) {
+          that.$message.error('序列号不正确');
+        } else if (data.valid == 2) {
+          that.$message.error('序列号未找到');
+        }
       });
     },
     exportUI() {

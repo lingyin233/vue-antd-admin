@@ -32,6 +32,7 @@ module.exports = {
   SKILLINFO_UPDATE_GROUP: `${BASE_URL}/skillinfo/updateGroup`,
   SERIAL_LIST: `${BASE_URL}/serial/list`,
   SERIAL_EXPORT: `${BASE_URL}/serial/export`,
+  SERIAL_VALID: `${BASE_URL}/serial/valid`,
   SERIAL_GENERATE: `${BASE_URL}/serial/generate`,
   SERIAL_DEL: `${BASE_URL}/serial/del`,
   APPUPDATE_LIST: `${BASE_URL}/app/update/list`,

@@ -163,13 +163,13 @@ export function param(a) {
       if (Array.isArray(obj)) {
         for (i = 0, len = obj.length; i < len; i++) {
           buildParams(
-            prefix + (typeof obj[i] === 'object' && obj[i] ? '.' + i : ''),
+            prefix + '[' + (typeof obj[i] === 'object' && obj[i] ? i : '') + ']',
             obj[i]
           );
         }
       } else if (Object.prototype.toString.call(obj) === '[object Object]') {
         for (key in obj) {
-          buildParams(prefix + '.' + key, obj[key]);
+          buildParams(prefix + '[' + key + ']', obj[key]);
         }
       } else {
         add(prefix, obj);
@@ -188,4 +188,3 @@ export function param(a) {
 
   return buildParams('', a).join('&');
 }
-
