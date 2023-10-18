@@ -98,13 +98,17 @@ export default {
   methods: {
     ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
     onSubmit (e) {
+      const that = this;
       e.preventDefault();
       this.form.validateFields((err) => {
         if (!err) {
           this.logging = true;
           const name = this.form.getFieldValue('name');
           const password = this.form.getFieldValue('password');
-          login(name, password).then(this.afterLogin);
+          login(name, password).then(this.afterLogin).catch(err => {
+            that.$message.error("登录失败");
+            that.logging = false;
+          });
         }
       });
     },
