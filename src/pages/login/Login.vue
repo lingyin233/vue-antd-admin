@@ -106,7 +106,7 @@ export default {
           const name = this.form.getFieldValue('name');
           const password = this.form.getFieldValue('password');
           login(name, password).then(this.afterLogin).catch(err => {
-            that.$message.error("登录失败");
+            that.$message.error("登录失败，请重新登录");
             that.logging = false;
           });
         }

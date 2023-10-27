@@ -148,7 +148,6 @@ export default {
       listCompany({ current: that.pagination.current, size: that.pagination.pageSize, ...that.form }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
-          that.$message.error('error code ' + r.code);
           return;
         }
         const data = r.data;

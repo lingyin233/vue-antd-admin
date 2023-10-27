@@ -194,6 +194,21 @@ const options = {
             },
           ]
         },
+        {
+          path: 'voice',
+          name: '标贝声音管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '标贝声音列表',
+              component: () => import('@/pages/voice/List')
+            },
+          ]
+        },
       ]
     }
   ]

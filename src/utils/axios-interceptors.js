@@ -24,9 +24,9 @@ const resp401 = {
         },
       });
     } else if (response.data.code === 404 || response.data.code === 400) {
-      message.error(response.data.message);
+      message.error(`${response.data.code} : ${response.data.message}`);
     } else if (response.data.code !== 200) {
-      message.error('error code ' + response.data.code);
+      message.error(`${response.data.code} : ${response.data.message}`);
     }
     return response;
   },
