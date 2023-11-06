@@ -209,6 +209,21 @@ const options = {
             },
           ]
         },
+        {
+          path: 'xf',
+          name: '讯飞语音管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'tts',
+              name: '讯飞语音合成',
+              component: () => import('@/pages/xf/tts')
+            },
+          ]
+        },
       ]
     }
   ]
