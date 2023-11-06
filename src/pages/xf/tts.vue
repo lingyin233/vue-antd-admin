@@ -5,6 +5,8 @@
         <a-form-item name="vcn" label="发音人" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <a-select v-model:value="updateUIForm['vcn']">
             <a-select-option value="xiaoyan">xiaoyan</a-select-option>
+            <a-select-option value="chongchong">chongchong</a-select-option>
+            <a-select-option value="x_qige">x_qige</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item name="content" label="内容" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
