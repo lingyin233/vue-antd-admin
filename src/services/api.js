@@ -45,4 +45,5 @@ module.exports = {
   VOICE_DEL: `${BASE_URL}/voice/del`,
   XF_TTS: `${BASE_URL}/xf/tts`,
   XF_VCN_LIST: `${BASE_URL}/xf/vcnList`,
+  BAKER_TTS: `${BASE_URL}/baker/tts`,
 };
