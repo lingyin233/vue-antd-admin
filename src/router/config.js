@@ -21,6 +21,14 @@ const options = {
       component: () => import('@/pages/exception/403'),
     },
     {
+      path: 'demo',
+      name: 'demo',
+      meta: {
+        icon: 'dashboard',
+      },
+      redirect: '/dashboard/workplace',
+    },
+    {
       path: '/',
       name: 'index',
       component: TabsView,

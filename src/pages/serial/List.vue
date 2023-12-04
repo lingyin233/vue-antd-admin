@@ -52,6 +52,9 @@
         <a-form-item name="num" label="生成数量" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="addUIForm['count']" placeholder="请输入"></a-input>
         </a-form-item>
+        <a-form-item name="num" label="选择企业" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="addUIForm['companyId']" :options="companyList"></a-select>
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -61,6 +64,7 @@
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
 import { listSerial, exportSerialUrl, generateSerial, delSerial, validSerial } from '@/services/serial';
+import { listCompany } from '@/services/company';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
@@ -76,6 +80,12 @@ export default {
         company: '',
         product: '',
         count: '',
+        companyId: '',
+      },
+      companyList: [],
+      companyListQuery: {
+        current: 1,
+        size: 200,
       },
       endOpen: false,
       form: {
@@ -196,6 +206,7 @@ export default {
     },
     addUI() {
       const that = this;
+      that.queryCompanyList();
       that.addUIVisible = true;
     },
     addUIOk() {
@@ -209,6 +220,29 @@ export default {
           that.init();
           that.addUIVisible = false;
         });
+      });
+    },
+    queryCompanyList() {
+      const that = this;
+      listCompany({...that.companyListQuery}).then((res) => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        that.companyList = [];
+        that.companyList.push({
+          value: 0,
+          label: 'Obexx',
+        });
+        const data = r.data;
+        const records = data.records;
+        for (let idx in records) {
+          let item = records[idx];
+          that.companyList.push({
+            value: item.id,
+            label: item.name,
+          });
+        }
       });
     },
     disabledStartDate(startTime) {
