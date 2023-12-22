@@ -46,4 +46,7 @@ module.exports = {
   XF_TTS: `${BASE_URL}/xf/tts`,
   XF_VCN_LIST: `${BASE_URL}/xf/vcnList`,
   BAKER_TTS: `${BASE_URL}/baker/tts`,
+  CAROUSEL_LIST: `${BASE_URL}/carousel/list`,
+  CAROUSEL_ADD: `${BASE_URL}/carousel/add`,
+  CAROUSEL_DEL: `${BASE_URL}/carousel/del`,
 };

@@ -48,6 +48,19 @@ const options = {
           }]
         },
         {
+          path: 'carousel',
+          name: '轮播图管理',
+          meta: {
+            icon: 'dashboard'
+          },
+          component: BlankView,
+          children: [{
+            path: 'list',
+            name: '轮播图列表',
+            component: () => import('@/pages/carousel/List'),
+          }]
+        },
+        {
           path: 'users',
           name: '用户管理',
           meta: {
