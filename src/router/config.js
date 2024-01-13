@@ -250,6 +250,21 @@ const options = {
             },
           ]
         },
+        {
+          path: 'aiui',
+          name: 'AIUI问答库',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'qalist',
+              name: 'AIUI问答库',
+              component: () => import('@/pages/aiui/qalist')
+            },
+          ]
+        }
       ]
     }
   ]

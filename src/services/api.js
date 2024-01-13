@@ -49,4 +49,8 @@ module.exports = {
   CAROUSEL_LIST: `${BASE_URL}/carousel/list`,
   CAROUSEL_ADD: `${BASE_URL}/carousel/add`,
   CAROUSEL_DEL: `${BASE_URL}/carousel/del`,
+  AIUI_QA_LIST: `${BASE_URL}/aiui/qa/list`,
+  AIUI_QA_ADD: `${BASE_URL}/aiui/qa/add`,
+  AIUI_QA_DEL: `${BASE_URL}/aiui/qa/del`,
+  AIUI_QA_UPDATE_STATUS: `${BASE_URL}/aiui/qa/updateStatus`,
 };
