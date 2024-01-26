@@ -217,7 +217,7 @@ const options = {
         },
         {
           path: 'voice',
-          name: '标贝声音管理',
+          name: '声音管理',
           meta: {
             icon: 'apple'
           },
@@ -225,14 +225,14 @@ const options = {
           children: [
             {
               path: 'list',
-              name: '标贝声音列表',
+              name: '声音列表',
               component: () => import('@/pages/voice/List')
             },
           ]
         },
         {
           path: 'audio',
-          name: '语音管理',
+          name: '语音合成管理',
           meta: {
             icon: 'apple'
           },

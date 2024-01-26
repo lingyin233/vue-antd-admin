@@ -51,6 +51,18 @@
             <a-select-option value="2">用户</a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item name="sdkType" label="SDK类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateUIForm['sdkType']" placeholder="请选择">
+            <a-select-option value="databaker">标贝</a-select-option>
+            <a-select-option value="xunfei">讯飞</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item name="lang" label="语言" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateUIForm['lang']" placeholder="请选择">
+            <a-select-option value="putonghua">普通话</a-select-option>
+            <a-select-option value="yueyu">粤语</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item name="userId" label="用户ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['userId']" placeholder="请输入"></a-input>
         </a-form-item>
@@ -155,6 +167,22 @@ export default {
           key: 'type',
           customRender: (text, row, index) => {
             return text == 1 ? '系统' : '用户';
+          }
+        },
+        {
+          title: 'SDK类型',
+          dataIndex: 'sdkType',
+          key: 'sdkType',
+          customRender: (text, row, index) => {
+            return text == 'databaker' ? '标贝' : text == 'xunfei' ? '讯飞' : '';
+          }
+        },
+        {
+          title: '语言',
+          dataIndex: 'lang',
+          key: 'lang',
+          customRender: (text, row, index) => {
+            return text == 'putonghua' ? '普通话' : text == 'yueyu' ? '粤语' : '';
           }
         },
         {
