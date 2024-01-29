@@ -43,6 +43,7 @@ module.exports = {
   VOICE_LIST: `${BASE_URL}/voice/list`,
   VOICE_UPDATE: `${BASE_URL}/voice/update`,
   VOICE_DEL: `${BASE_URL}/voice/del`,
+  VOICE_UPDATE_I18N: `${BASE_URL}/voice/updateI18n`,
   XF_TTS: `${BASE_URL}/xf/tts`,
   XF_VCN_LIST: `${BASE_URL}/xf/vcnList`,
   BAKER_TTS: `${BASE_URL}/baker/tts`,

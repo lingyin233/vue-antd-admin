@@ -252,7 +252,7 @@ const options = {
         },
         {
           path: 'aiui',
-          name: 'AIUI问答库',
+          name: 'AIUI问答库管理',
           meta: {
             icon: 'apple'
           },
