@@ -188,3 +188,28 @@ export function param(a) {
 
   return buildParams('', a).join('&');
 }
+
+export function trim(str) {
+  return str == null ? '' : str.replace(/^\s+|\s+$/g, '');
+}
+
+export function isBlank(str) {
+  return trim(str) == '';
+}
+
+export function filter(array, fn) {
+  let newArray = [];
+  for (let i = 0; i < array.length; i++) {
+    fn(array[i]) && newArray.push(array[i]);
+  }
+  return newArray;
+}
+
+export function contains(array, fn) {
+  for (let i = 0; i < array.length; i++) {
+    if (fn(array[i])) {
+      return true;
+    }
+  }
+  return false;
+}

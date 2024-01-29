@@ -84,10 +84,9 @@
           </div>
         </a-form-item>
         <a-form-item name="lang" label="语言" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select @change="(option) => langChange(option)" labelInValue>
+          <a-select v-model:value="langSelect" @change="(option) => langChange(option)" labelInValue>
             <a-select-option value="">无</a-select-option>
-            <a-select-option value="en_US">英语-美国</a-select-option>
-            <a-select-option value="zh_TW">中文-台湾</a-select-option>
+            <a-select-option value="en_GB">英语-英国</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -100,12 +99,13 @@
           <a-input v-model:value="item['lang']"></a-input>
         </a-form-item>
         <a-form-item name="field" label="字段" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select labelInValue @change="(option) => fieldChange(item, option)" :options="columns">
+          <a-select labelInValue @change="(option) => fieldChange(item, option)" :options="langFieldOptions">
           </a-select>
         </a-form-item>
         <div v-for="(val, index) in item['kv']" :key="index">
           <a-form-item :name="val['key']" :label="val['label']" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-            <a-input v-model:value="val['value']" style="width: 90%; margin-right: 8px"></a-input>
+            <a-input :disabled="true" v-model:value="val['oldValue']" style="width: 30%; margin-right: 8px"></a-input>
+            <a-input v-model:value="val['value']" style="width: 58%; margin-right: 8px"></a-input>
             <a-icon @click="fieldRemove(item, index)" class="dynamic-delete-button" type="minus-circle-o" />
           </a-form-item>
         </div>
@@ -129,6 +129,8 @@ export default {
     return {
       i18nUIVisible: false,
       i18nUIForm: {},
+      langFieldOptions: [],
+      langSelect: '',
       fileList: [],
       percent: 0,
       module: 'voice',
@@ -383,11 +385,16 @@ export default {
     },
     i18nUI(record) {
       const that = this;
+      console.log('record', record);
+      that.langFieldOptions = that.$util.filter(that.columns, (e) => that.$util.contains(['name'], (e1) => e1 == e.key));
+      that.langSelect = '';
+
       // clear
       that.i18nUIForm = {};
       that.i18nUIVisible = true;
       that.i18nUIForm['id'] = record.id;
-      let i18n = record.i18n == null ? {} : JSON.parse(record.i18n);
+      that.i18nUIForm['record'] = record;
+      let i18n = that.$util.isBlank(record.i18n) ? {} : JSON.parse(record.i18n);
       console.log('i18n', i18n);
       that.i18nUIForm['i18n'] = [];
       let columnsMap = {};
@@ -398,7 +405,7 @@ export default {
       for (let lang in i18n) {
         let data = {lang: lang, kv: []};
         for (let key in i18n[lang]) {
-          data['kv'].push({label: columnsMap[key].title, key: key, value: i18n[lang][key]});
+          data['kv'].push({label: columnsMap[key].title, oldValue: record[key], key: key, value: i18n[lang][key]});
         }
         that.i18nUIForm['i18n'].push(data);
       }
@@ -438,6 +445,9 @@ export default {
     },
     langChange(option) {
       const that = this;
+      if (option.key == '') {
+        return;
+      }
       let exist = false;
       for (let i in that.i18nUIForm['i18n']) {
         let item = that.i18nUIForm['i18n'][i];
@@ -461,8 +471,11 @@ export default {
     },
     fieldChange(item, option) {
       const that = this;
-      console.log(item);
-      item['kv'].push({label: option.label, key: option.key, value: ''});
+      console.log('item', item);
+      if (that.$util.contains(item['kv'], (e) => e.key == option.key)) {
+        return;
+      }
+      item['kv'].push({label: option.label, oldValue: that.i18nUIForm['record'][option.key], key: option.key, value: ''});
       that.$forceUpdate();
     },
     fieldRemove(item, index) {
@@ -492,14 +505,5 @@ export default {
 
 .operator {
   margin-bottom: 18px;
-}
-
-.dynamic-delete-button {
-  cursor: pointer;
-  position: relative;
-  top: 4px;
-  font-size: 24px;
-  color: #999;
-  transition: all 0.3s;
 }
 </style>
