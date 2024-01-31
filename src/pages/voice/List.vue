@@ -60,8 +60,8 @@
         </a-form-item>
         <a-form-item name="lang" label="语言" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-select v-model:value="updateUIForm['lang']" placeholder="请选择">
-            <a-select-option value="putonghua">普通话</a-select-option>
-            <a-select-option value="yueyu">粤语</a-select-option>
+            <a-select-option value="zh">普通话</a-select-option>
+            <a-select-option value="cat">粤语</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item name="userId" label="用户ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
@@ -222,7 +222,7 @@ export default {
           dataIndex: 'lang',
           key: 'lang',
           customRender: (text, row, index) => {
-            return text == 'putonghua' ? '普通话' : text == 'yueyu' ? '粤语' : '';
+            return text == 'zh' ? '普通话' : text == 'cat' ? '粤语' : '';
           }
         },
         {
