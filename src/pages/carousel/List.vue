@@ -201,6 +201,7 @@ export default {
         }
         that.$message.success('操作成功');
         that.init();
+        that.updateUIVisible = false;
       });
     },
     onChangeStatus(checked, e, record) {

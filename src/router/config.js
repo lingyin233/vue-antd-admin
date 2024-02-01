@@ -264,6 +264,21 @@ const options = {
               component: () => import('@/pages/aiui/qalist')
             },
           ]
+        },
+        {
+          path: 'tool',
+          name: '工具管理',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'upload',
+              name: '文件上传',
+              component: () => import('@/pages/tool/upload')
+            },
+          ]
         }
       ]
     }
