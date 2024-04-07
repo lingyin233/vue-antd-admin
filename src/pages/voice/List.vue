@@ -2,6 +2,19 @@
   <div class="new-page" :style="`min-height: ${pageMinHeight}px`">
     <a-card>
       <div class="search">
+        <a-form layout="horizontal" :model="form">
+          <a-row>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="voiceName" label="声音唯一标识" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <a-input placeholder="请输入" v-model:value="form['voiceName']"></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <span style="margin-top: 3px;">
+            <a-button type="primary" @click="queryList()">查询</a-button>
+            <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
+          </span>
+        </a-form>
       </div>
       <div style="margin-top: 50px;">
         <a-space class="operator">
@@ -13,6 +26,7 @@
             <a-avatar :src="record.avatar"></a-avatar>
           </div>
           <div slot="action" slot-scope="{text, record}">
+            <a href="javascript:void(0);" type="primary"  style="margin: 2px;" @click="addUI(record)">编辑</a>
             <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 2px;">
               <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
@@ -28,6 +42,9 @@
         </a-form-item>
         <a-form-item name="name" label="名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['name']" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="sdkVoiceName" label="平台声音名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateUIForm['sdkVoiceName']" placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item name="voiceName" label="声音唯一标识" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['voiceName']" placeholder="请输入"></a-input>
@@ -53,15 +70,25 @@
           </a-select>
         </a-form-item>
         <a-form-item name="sdkType" label="SDK类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateUIForm['sdkType']" placeholder="请选择">
+          <a-select v-model:value="updateUIForm['sdkType']" placeholder="请选择" show-search  @search="v => onChangeSelect(v, 'sdkType')" @blur="v => onGetValue(v, 'sdkType')">
             <a-select-option value="databaker">标贝</a-select-option>
             <a-select-option value="xunfei">讯飞</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item name="lang" label="语言" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateUIForm['lang']" placeholder="请选择">
+          <a-select v-model:value="updateUIForm['lang']" placeholder="请选择" show-search @search="v => onChangeSelect(v, 'lang')" @blur="v => onGetValue(v, 'lang')">
             <a-select-option value="zh">普通话</a-select-option>
+            <a-select-option value="eng">英文</a-select-option>
             <a-select-option value="cat">粤语</a-select-option>
+            <a-select-option value="sch">四川话</a-select-option>
+            <a-select-option value="tjh">天津话</a-select-option>
+            <a-select-option value="tai">台湾话</a-select-option>
+            <a-select-option value="kr">韩语</a-select-option>
+            <a-select-option value="bra">巴葡语</a-select-option>
+            <a-select-option value="jp">日语</a-select-option>
+            <a-select-option value="ESP">西班牙西语</a-select-option>
+            <a-select-option value="MEX">墨西哥西语</a-select-option>
+            <a-select-option value="UYG">维吾尔语</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item name="userId" label="用户ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
@@ -140,6 +167,8 @@ export default {
         name: '',
         voiceName: '',
         gender: '',
+        sdkType: '',
+        lang: '',
       },
       form: {
       },
@@ -183,6 +212,11 @@ export default {
           key: 'name',
         },
         {
+          title: '平台声音名称',
+          dataIndex: 'sdkVoiceName',
+          key: 'sdkVoiceName',
+        },
+        {
           title: '声音唯一标识',
           dataIndex: 'voiceName',
           key: 'voiceName',
@@ -214,7 +248,7 @@ export default {
           dataIndex: 'sdkType',
           key: 'sdkType',
           customRender: (text, row, index) => {
-            return text == 'databaker' ? '标贝' : text == 'xunfei' ? '讯飞' : '';
+            return text == 'databaker' ? '标贝' : text == 'xunfei' ? '讯飞' : text;
           }
         },
         {
@@ -222,7 +256,7 @@ export default {
           dataIndex: 'lang',
           key: 'lang',
           customRender: (text, row, index) => {
-            return text == 'zh' ? '普通话' : text == 'cat' ? '粤语' : '';
+            return text == 'zh' ? '普通话' : text == 'cat' ? '粤语' : text;
           }
         },
         {
@@ -337,7 +371,7 @@ export default {
     },
     queryList() {
       const that = this;
-      listVoice({current: that.pagination.current, size: that.pagination.pageSize}).then((res) => {
+      listVoice({current: that.pagination.current, size: that.pagination.pageSize, ...that.form}).then((res) => {
         const r = res.data;
         const data = r.data;
         that.pagination = {
@@ -348,9 +382,13 @@ export default {
         that.list = data.records;
       });
     },
-    addUI() {
+    addUI(record) {
       const that = this;
-      that.$util.clearObject(that.updateUIForm, true);
+      if (record) {
+        that.$util.extend(true, that.updateUIForm, record);
+      } else {
+        that.$util.clearObject(that.updateUIForm, true);
+      }
       that.updateUIVisible = true;
     },
     updateUI(record) {
@@ -482,6 +520,16 @@ export default {
       const that = this;
       item['kv'].splice(index, 1);
       that.$forceUpdate();
+    },
+    onChangeSelect(value, field) {
+      const that = this;
+      that.updateUIForm[field] = value;
+      console.log('onChangeSelect:', value);
+    },
+    onGetValue(value, field) {
+      const that = this;
+      that.updateUIForm[field] = value;
+      console.log('onGetValue:', value);
     },
   },
   created() {
