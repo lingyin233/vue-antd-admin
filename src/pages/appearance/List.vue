@@ -5,6 +5,11 @@
         <a-form layout="horizontal" :model="form">
           <a-row>
             <a-col :md="8" :sm="24">
+              <a-form-item name="name" label="APPID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <appid-select v-model:value="form['appId']" placeholder="请输入"></appid-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
               <a-form-item name="name" label="名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
                 <a-input v-model:value="form['name']" placeholder="请输入"></a-input>
               </a-form-item>
@@ -52,10 +57,11 @@
             <span v-if="record.status == 1">正常</span>
           </div>
           <div slot="action" slot-scope="{text, record}">
-            <a href="javascript:void(0);" type="primary" @click="updateUI(record)">修改</a>&nbsp;
-            <a-popconfirm title="确认删除？" @confirm="del(record)">
-              <a href="javascript:void(0);" type="primary">删除</a>&nbsp;
+            <a href="javascript:void(0);" type="primary" @click="updateUI(record)" style="margin-left: 2px;">修改</a>
+            <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin-left: 2px;">
+              <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
+            <a href="javascript:void(0);" type="primary" @click="updateUI(record, true)" style="margin-left: 2px;">复制</a>
           </div>
         </standard-table>
       </div>
@@ -102,6 +108,7 @@
       
 <script>
 import StandardTable from '@/components/table/StandardTable';
+import AppidSelect from '@/components/obx/AppidSelect';
 import { mapState } from 'vuex';
 import { listAppearance, delAppearance, addAppearance } from '@/services/appearance';
 import { qiniuUploadToken } from '@/services/common';
@@ -110,7 +117,7 @@ import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
   name: 'AppearanceList',
-  components: { StandardTable },
+  components: { StandardTable, AppidSelect },
   data() {
     return {
       updateUIVisible: false,
@@ -127,6 +134,7 @@ export default {
         infoUrl: '',
         picUrl: '',
         type: '',
+        appId: '',
       },
       form: {
         name: '',
@@ -213,6 +221,11 @@ export default {
           scopedSlots: { customRender: 'status' },
         },
         {
+          title: 'APPID',
+          dataIndex: 'appId',
+          key: 'appId',
+        },
+        {
           title: '创建时间',
           dataIndex: 'createTime',
           key: 'createTime',
@@ -280,10 +293,16 @@ export default {
       this.updateForm.type = '1';
       this.updateUIVisible = true;
     },
-    updateUI(record) {
+    updateUI(record, copy) {
+      const that = this;
       this.$util.clearObject(this.updateForm, true);
       this.$util.extend(true, this.updateForm, record);
       this.updateForm['gender'] = record.gender + '';
+      if (copy) {
+        that.updateForm['id'] = '';
+        that.updateForm['infoUrl'] = '';
+        that.updateForm['picUrl'] = '';
+      }
       this.updateUIVisible = true;
     },
     saveAppearance() {

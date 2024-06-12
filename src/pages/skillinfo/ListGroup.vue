@@ -14,7 +14,8 @@
             <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin-right: 5px;">
               <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
-            <a href="javascript:void(0);" @click="i18nUI(record)">国际化</a>
+            <a href="javascript:void(0);" @click="i18nUI(record)" style="margin-right: 5px;">国际化</a>
+            <a href="javascript:void(0);" @click="updateUI(record, true)" style="margin-right: 5px;">复制</a>
           </div>
         </standard-table>
       </div>
@@ -23,6 +24,9 @@
       <a-form>
         <a-form-item name="id" label="ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['id']" disabled placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="appId" label="appId" :labelCol="{ span: 5}" :wrapperCol="{ span: 18, offset: 1}">
+          <appid-select v-model:value="updateUIForm['appId']"></appid-select>
         </a-form-item>
         <a-form-item name="groupCode" label="技能分组码" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['groupCode']" placeholder="请输入"></a-input>
@@ -72,13 +76,14 @@
       
 <script>
 import StandardTable from '@/components/table/StandardTable';
+import AppidSelect from '@/components/obx/AppidSelect';
 import { mapState } from 'vuex';
 import { listSkillinfoGroup, addSkillinfoGroup, delSkillinfoGroup, updateI18nSkillinfoGroup } from '@/services/skillinfo';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
   name: 'SkillinfoGroupList',
-  components: { StandardTable },
+  components: { StandardTable, AppidSelect },
   data() {
     return {
       i18nUIVisible: false,
@@ -88,6 +93,7 @@ export default {
       updateUIVisible: false,
       updateUIForm: {
         id: '',
+        appId: '',
         groupCode: '',
         groupName: '',
       },
@@ -114,6 +120,11 @@ export default {
           title: '技能分组简述',
           dataIndex: 'groupName',
           key: 'groupName',
+        },
+        {
+          title: 'APPID',
+          dataIndex: 'appId',
+          key: 'appId',
         },
         {
           title: '创建时间',
@@ -166,15 +177,19 @@ export default {
         };
       });
     },
-    updateUI(record) {
+    updateUI(record, copy) {
       const that = this;
       that.$util.clearObject(that.updateUIForm, true);
       that.fileList = [];
       that.$util.extend(true, that.updateUIForm, record);
+      if (copy) {
+        that.updateUIForm['id'] = '';
+      }
       that.updateUIVisible = true;
     },
     updateUIOk() {
       const that = this;
+      console.log(that.updateUIForm);
       addSkillinfoGroup({...that.updateUIForm}).then((res) => {
         const r = res.data;
         if (r.code !== 200) {

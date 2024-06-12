@@ -3,7 +3,17 @@
     <a-card title="轮播图列表">
       <div class="search">
         <a-form layout="horizontal">
-
+          <a-row>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="name" label="APPID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <appid-select v-model:value="form['appId']" placeholder="请输入"></appid-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <span style="margin-top: 3px;">
+            <a-button type="primary" @click="queryList()">查询</a-button>
+            <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
+          </span>
         </a-form>
       </div>
       <div style="margin-top: 50px;">
@@ -39,9 +49,11 @@
     </a-card>
     <a-modal v-model="updateUIVisible" title="添加或更新" @ok="addUIOk" :maskClosable="false">
       <a-form>
-        <a-form-item style="display: none;" name="ID" label="id" :labelCol="{ span: 5 }"
-          :wrapperCol="{ span: 18, offset: 1 }">
-          <a-input v-model:value="updateUIForm['id']" placeholder="请输入"></a-input>
+        <a-form-item name="ID" label="id" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateUIForm['id']" disabled placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="appId" label="APPID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <appid-select v-model:value="updateUIForm['appId']" placeholder="请输入"></appid-select>
         </a-form-item>
         <a-form-item name="title" label="标题" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['title']" placeholder="请输入"></a-input>
@@ -76,13 +88,14 @@
 </template>
       
 <script>
+import AppidSelect from '@/components/obx/AppidSelect';
 import { mapState } from 'vuex';
 import { listCarousel, addCarousel, delCarousel } from '@/services/carousel';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
   name: 'AppVersionList',
-  components: {},
+  components: { AppidSelect },
   data() {
     return {
       updateUIVisible: false,
@@ -91,6 +104,9 @@ export default {
         current: 1,
         pageSize: 10,
         total: 0,
+      },
+      form: {
+        appId: ''
       },
       list: [],
       columns: [
@@ -137,6 +153,11 @@ export default {
           dataIndex: 'status',
           key: 'status',
           scopedSlots: { customRender: 'status' },
+        },
+        {
+          title: 'APPID',
+          dataIndex: 'appId',
+          key: 'appId',
         },
         {
           title: '创建时间',
@@ -222,7 +243,7 @@ export default {
     },
     del(record) {
       const that = this;
-      delCarousel({id: record.id}).then((res) => {
+      delCarousel({ id: record.id }).then((res) => {
         const r = res.data;
         if (r.code != 200) {
           return;

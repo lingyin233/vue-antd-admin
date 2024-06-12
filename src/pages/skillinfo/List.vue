@@ -5,7 +5,13 @@
         <a-form layout="horizontal" :model="form">
           <a-row>
             <a-col :md="8" :sm="24">
-              <a-form-item name="type" label="技能分组" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+              <a-form-item name="appid" label="APPID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <appid-select v-model:value="form['appId']" placeholder="请选择">
+                </appid-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="groupCode" label="技能分组" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
                 <a-select v-model:value="form['groupCode']" placeholder="请选择" :options="skillGroupList">
                 </a-select>
               </a-form-item>
@@ -35,6 +41,7 @@
             </div>
             <div><a href="javascript:void(0);" type="primary" @click="updateGroupCodeUI(record)" style="margin: 2px;">更新分组</a></div>
             <div><a href="javascript:void(0);" @click="i18nUI(record)" style="margin: 2px;">国际化</a></div>
+            <div><a href="javascript:void(0);" @click="updateUI(record, true)" style="margin: 2px;">复制</a></div>
           </div>
         </standard-table>
       </div>
@@ -43,6 +50,9 @@
       <a-form>
         <a-form-item name="id" label="ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['id']" disabled placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="id" label="APPID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <appid-select v-model:value="updateUIForm['appId']" disabled placeholder="请输入"></appid-select>
         </a-form-item>
         <a-form-item name="skillName" label="技能名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['skillName']" placeholder="请输入"></a-input>
@@ -72,7 +82,7 @@
           <a-input v-model:value="updateGroupCodeUIForm['id']" disabled placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item name="groupCode" label="技能分组" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateGroupCodeUIForm['groupCode']" placeholder="请选择" :options="skillGroupList">
+          <a-select v-model:value="updateGroupCodeUIForm['groupCode']" placeholder="请选择" :options="setSkillGroupList">
           </a-select>
         </a-form-item>
       </a-form>
@@ -117,6 +127,7 @@
       
 <script>
 import StandardTable from '@/components/table/StandardTable';
+import AppidSelect from '@/components/obx/AppidSelect';
 import { mapState } from 'vuex';
 import { listSkillinfo, addSkillinfo, delSkillinfo, updateSkillGroup, listSkillinfoGroup, updateI18nSkillinfo } from '@/services/skillinfo';
 import { qiniuUploadToken } from '@/services/common';
@@ -125,7 +136,7 @@ import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
   name: 'SkillinfoList',
-  components: { StandardTable },
+  components: { StandardTable, AppidSelect },
   data() {
     return {
       i18nUIVisible: false,
@@ -139,6 +150,7 @@ export default {
       updateGroupCodeUIForm: {
         id: '',
         groupCode: '',
+        appId: '',
       },
       updateUIVisible: false,
       updateUIForm: {
@@ -148,11 +160,14 @@ export default {
         skillShortDesc: '',
         sample: '',
         skillFullDesc: '',
+        appId: '',
       },
       form: {
+        appId: '',
         groupCode: '',
       },
       skillGroupList: [],
+      setSkillGroupList: [],
       pagination: {
         current: 1,
         pageSize: 10,
@@ -212,6 +227,11 @@ export default {
             }
             return item.label;
           }
+        },
+        {
+          title: 'APPID',
+          dataIndex: 'appId',
+          key: 'appId',
         },
         {
           title: '创建时间',
@@ -301,7 +321,7 @@ export default {
     },
     querySearch() {
       const that = this;
-      listSkillinfoGroup({ current: 1, size: 1000 }).then((res) => {
+      listSkillinfoGroup({ current: 1, size: 1000, appId: that.form['appId'] }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
@@ -315,7 +335,7 @@ export default {
           var item = data.records[i];
           that.skillGroupList.push({
             value: item['groupCode'],
-            label: item['groupName'],
+            label: item['groupName'] + " " + item['groupCode'],
           });
         }
       });
@@ -336,10 +356,13 @@ export default {
         };
       });
     },
-    updateUI(record) {
+    updateUI(record, copy) {
       const that = this;
       that.$util.clearObject(that.updateUIForm, true);
       that.$util.extend(true, that.updateUIForm, record);
+      if (copy) {
+        that.updateUIForm['id'] = '';
+      }
       that.updateUIVisible = true;
     },
     updateUIOk() {
@@ -350,6 +373,7 @@ export default {
           return;
         }
         that.$message.success('操作成功', 1.5, () => {
+          that.updateUIVisible = false;
           that.init();
         });
       });
@@ -374,9 +398,30 @@ export default {
     },
     updateGroupCodeUI(record) {
       const that = this;
-      that.updateGroupCodeUIForm['id'] = record.id;
-      that.updateGroupCodeUIForm['groupCode'] = record.groupCode;
+      that.setSkillGroupList = [];
+
       that.updateGroupCodeUIVisible = true;
+      that.updateGroupCodeUIForm['id'] = record.id;
+
+      if (record.appId == '') {
+        return;
+      }
+
+      listSkillinfoGroup({ current: 1, size: 1000, appId: record.appId }).then((res) => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        const data = r.data;
+        for (var idx in data.records) {
+          const item = data.records[idx];
+          that.setSkillGroupList.push({
+            value: item.groupCode,
+            label: item.groupName,
+          });
+        }
+      });
+      that.updateGroupCodeUIForm['groupCode'] = record.groupCode;
     },
     updateGrouCodeUIOk() {
       const that = this;

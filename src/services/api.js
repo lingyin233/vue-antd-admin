@@ -56,4 +56,5 @@ module.exports = {
   AIUI_QA_ADD: `${BASE_URL}/aiui/qa/add`,
   AIUI_QA_DEL: `${BASE_URL}/aiui/qa/del`,
   AIUI_QA_UPDATE_STATUS: `${BASE_URL}/aiui/qa/updateStatus`,
+  APPID_LIST: `${BASE_URL}/appid/list`
 };
