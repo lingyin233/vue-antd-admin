@@ -16,6 +16,12 @@
                 </a-select>
               </a-form-item>
             </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="skillName" label="技能名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <a-input v-model:value="form['skillName']" placeholder="请输入">
+                </a-input>
+              </a-form-item>
+            </a-col>
           </a-row>
           <span style="margin-top: 3px;">
             <a-button type="primary" @click="queryList()">查询</a-button>
@@ -165,6 +171,7 @@ export default {
       form: {
         appId: '',
         groupCode: '',
+        skillName: '',
       },
       skillGroupList: [],
       setSkillGroupList: [],
