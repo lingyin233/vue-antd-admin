@@ -43,6 +43,9 @@
         <a-form-item label="联系邮箱" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
           <a-input v-model:value="form.email" placeholder="请输入" />
         </a-form-item>
+        <a-form-item label="公司代号" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
+          <a-input v-model:value="form.code" placeholder="请输入" />
+        </a-form-item>
         <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 12, offset: 2 }">
           <a-button type="primary" @click="saveCompany()">保存</a-button>
           <a-button type="default" style="margin-left: 8px" @click="$router.go(-1)">返回</a-button>

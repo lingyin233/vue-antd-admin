@@ -105,6 +105,11 @@ export default {
           key: 'email',
         },
         {
+          title: '公司代号',
+          dataIndex: 'code',
+          key: 'code',
+        },
+        {
           title: '状态',
           dataIndex: 'status',
           key: 'status',
