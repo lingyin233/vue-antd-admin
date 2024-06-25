@@ -11,8 +11,9 @@
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item name="createTime" label="创建时间" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-                <a-date-picker :disabled-date="disabledStartDate" show-time @change="startChange" style="padding-right: 5px;"
-                  format="YYYY-MM-DD HH:mm:ss" placeholder="Start" @openChange="handleStartOpenChange" />
+                <a-date-picker :disabled-date="disabledStartDate" show-time @change="startChange"
+                  style="padding-right: 5px;" format="YYYY-MM-DD HH:mm:ss" placeholder="Start"
+                  @openChange="handleStartOpenChange" />
                 <a-date-picker :disabled-date="disabledEndDate" show-time @change="endChange" style="padding-right: 5px;"
                   format="YYYY-MM-DD HH:mm:ss" placeholder="End" :open="endOpen" @openChange="handleEndOpenChange" />
               </a-form-item>
@@ -55,6 +56,9 @@
         <a-form-item name="num" label="选择企业" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-select v-model:value="addUIForm['companyId']" :options="companyList"></a-select>
         </a-form-item>
+        <a-form-item name="num" label="选择企业产品型号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="addUIForm['equipmentGroupId']" :options="serialGroupList"></a-select>
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -67,6 +71,9 @@ import { listSerial, exportSerialUrl, generateSerial, delSerial, validSerial } f
 import { listCompany } from '@/services/company';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
+
+import { listSerialGroup } from '@/services/serialgroup';
+
 export default {
   name: 'SerialList',
   components: { StandardTable },
@@ -81,7 +88,9 @@ export default {
         product: '',
         count: '',
         companyId: '',
+        equipment_group_id: '',
       },
+      serialGroupList: [],
       companyList: [],
       companyListQuery: {
         current: 1,
@@ -119,6 +128,16 @@ export default {
           title: '序列号',
           dataIndex: 'serialNumber',
           key: 'serialNumber',
+        },
+        {
+          title: '公司ID',
+          dataIndex: 'companyId',
+          key: 'companyId',
+        },
+        {
+          title: '设备分组ID',
+          dataIndex: 'equipmentGroupId',
+          key: 'equipmentGroupId',
         },
         {
           title: '状态',
@@ -185,7 +204,7 @@ export default {
         that.$message.error('序列号格式不正确');
         return;
       }
-      validSerial({...that.validForm}).then((res) => {
+      validSerial({ ...that.validForm }).then((res) => {
         const r = res.data;
         if (r.code != 200) {
           return;
@@ -202,7 +221,7 @@ export default {
     },
     exportUI() {
       const that = this;
-      window.open(exportSerialUrl({...that.form}));
+      window.open(exportSerialUrl({ ...that.form }));
     },
     addUI() {
       const that = this;
@@ -224,7 +243,7 @@ export default {
     },
     queryCompanyList() {
       const that = this;
-      listCompany({...that.companyListQuery}).then((res) => {
+      listCompany({ ...that.companyListQuery }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
@@ -279,7 +298,7 @@ export default {
     },
     del(record) {
       const that = this;
-      delSerial({id: record.id}).then((res) => {
+      delSerial({ id: record.id }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
@@ -297,6 +316,27 @@ export default {
     ...mapState('setting', ['pageMinHeight']),
     desc() {
       return this.$t('description');
+    }
+  },
+  watch: {
+    'addUIForm.companyId': function (newValue, oldValue) {
+      const that = this;
+      listSerialGroup({current: 1, size: 1000000, companyId: newValue}).then(res => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        const data = r.data;
+        let list = [{
+          value: '',
+          label: '\u3000',
+        }];
+        for (var idx in data.records) {
+          const item = data.records[idx];
+          list.push({ key: item.id, title: item.groupName + " | " + item.groupCode + " | " + item.id });
+        }
+        that.serialGroupList = list;
+      });
     }
   }
 };

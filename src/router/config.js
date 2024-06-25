@@ -209,6 +209,11 @@ const options = {
           component: BlankView,
           children: [
             {
+              path: 'group/list',
+              name: '序列号分组列表',
+              component: () => import('@/pages/serial/ListGroup')
+            },
+            {
               path: 'list',
               name: '序列号列表',
               component: () => import('@/pages/serial/List')
