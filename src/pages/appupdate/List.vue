@@ -10,6 +10,17 @@
                 </a-select>
               </a-form-item>
             </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="type" label="类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <company-select v-model:value="form['companyId']" placeholder="请选择" :options="typeList">
+                </company-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="type" label="设备" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <a-select v-model:value="form['deviceGroupId']" :options="serialGroupListForm"></a-select>
+              </a-form-item>
+            </a-col>
           </a-row>
           <span style="margin-top: 3px;">
             <a-button type="primary" @click="query()">查询</a-button>
@@ -47,8 +58,16 @@
           <a-input v-model:value="updateUIForm['applicationId']" placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item name="type" label="类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateUIForm['type']" placeholder="请选择" :options="typeList">
+          <a-select v-model:value="updateUIForm['type']" placeholder="请选择" :options="typeList" @change="changeType">
           </a-select>
+        </a-form-item>
+        <a-form-item name="companyId" label="渠道" :labelCol="{ span: 5 }"
+          :wrapperCol="{ span: 18, offset: 1 }" v-show="isDevice">
+          <company-select v-model:value="updateUIForm['companyId']" placeholder="请输入"></company-select>
+        </a-form-item>
+        <a-form-item name="companyId" label="设备" :labelCol="{ span: 5 }"
+          :wrapperCol="{ span: 18, offset: 1 }" v-show="isDevice">
+          <a-select v-model:value="updateUIForm['deviceGroupId']" :options="serialGroupList"></a-select>
         </a-form-item>
         <a-form-item name="versionCode" label="整数版本号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['versionCode']" placeholder="请输入"></a-input>
@@ -105,9 +124,13 @@ import { qiniuUploadToken } from '@/services/common';
 import * as qiniu from 'qiniu-js';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
+
+import CompanySelect from '@/components/obx/CompanySelect';
+import { listSerialGroup } from '@/services/serialgroup';
+
 export default {
   name: 'AppUpdateList',
-  components: { StandardTable },
+  components: { StandardTable, CompanySelect },
   data() {
     return {
       module: 'appupdate',
@@ -160,6 +183,8 @@ export default {
       ],
       form: {
         type: '',
+        companyId: '',
+        deviceGroupId: '',
       },
       pagination: {
         current: 1,
@@ -240,6 +265,16 @@ export default {
           key: 'grayReleaseJson',
         },
         {
+          title: '渠道',
+          dataIndex: 'companyName',
+          key: 'companyName',
+        },
+        {
+          title: '设备',
+          dataIndex: 'deviceGroupName',
+          key: 'deviceGroupName',
+        },
+        {
           title: '创建时间',
           dataIndex: 'createTime',
           key: 'createTime',
@@ -253,7 +288,10 @@ export default {
           key: 'action',
           scopedSlots: { customRender: 'action' },
         },
-      ]
+      ],
+      isDevice: false,
+      serialGroupList: [],
+      serialGroupListForm: [],
     };
   },
   methods: {
@@ -303,6 +341,12 @@ export default {
     },
     updateUIOk() {
       const that = this;
+      if (that.updateUIForm['type'] == 'DEVICE') {
+        if (that.$util.isBlank(that.updateUIForm['companyId']) || that.$util.isBlank(that.updateUIForm['deviceGroupId'])) {
+          that.$message.error('请选择渠道和设备');
+          return;
+        }
+      }
       addAppUpdate({ ...that.updateUIForm }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
@@ -402,6 +446,29 @@ export default {
       this.updateUIForm.hashValue = hash;
       this.updateUIForm.appSize = fsize;
     },
+    changeType(value, option) {
+      console.log('changeType:', value);
+      this.isDevice = (value == 'DEVICE');
+    },
+    queryDeviceGroup(companyId, callback) {
+      const that = this;
+      listSerialGroup({current: 1, size: 1000000, companyId: companyId}).then(res => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        const data = r.data;
+        let list = [{
+          value: '',
+          label: '\u3000',
+        }];
+        for (var idx in data.records) {
+          const item = data.records[idx];
+          list.push({ key: item.id, title: item.groupName + " | " + item.groupCode + " | " + item.id });
+        }
+        if (callback) callback(list);
+      });
+    }
   },
   created() {
     this.init();
@@ -411,6 +478,22 @@ export default {
     desc() {
       return this.$t('description');
     }
+  },
+  watch: {
+    'updateUIForm.companyId': function(newValue, oldValue) {
+      console.log('companyId:', newValue);
+      const that = this;
+      this.queryDeviceGroup(newValue, (list) => {
+        that.serialGroupList = list;
+      });
+    },
+    'form.companyId': function(newValue, oldValue) {
+      console.log('companyId:', newValue);
+      const that = this;
+      this.queryDeviceGroup(newValue, (list) => {
+        that.serialGroupListForm = list;
+      });
+    },
   }
 };
 </script>
