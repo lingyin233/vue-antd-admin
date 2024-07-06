@@ -27,7 +27,8 @@
       </div>
       <div style="margin-top: 50px;">
         <a-space class="operator">
-          <a-button type="primary" @click="addUI">生成序列号</a-button>
+          <a-button type="primary" @click="addUI">添加序列号</a-button>
+          <a-button type="primary" @click="generateUI">生成序列号</a-button>
           <a-button type="primary" @click="exportUI">导出序列号</a-button>
           <a-input v-model:value="validForm['serialNumber']" placeholder="请输入"></a-input>
           <a-button type="primary" @click="validUI">校验序列号</a-button>
@@ -35,14 +36,15 @@
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
           :pagination="{ ...pagination, onChange: onPageChange }">
           <div slot="action" slot-scope="{text, record}">
-            <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 2px;">
+            <a href="javascript:void(0);" type="primary" @click="updateGroupUI(record)">修改分组</a>
+            <a-popconfirm title="确认删除？" @confirm="del(record)" style="margin: 5px;">
               <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
           </div>
         </standard-table>
       </div>
     </a-card>
-    <a-modal v-model="addUIVisible" title="生成序列号" @ok="addUIOk" :maskClosable="false">
+    <a-modal v-model="addUIVisible" title="添加序列号" @ok="addUIOk" :maskClosable="false">
       <a-form>
         <a-form-item name="company" label="公司编号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="addUIForm['company']" placeholder="请输入"></a-input>
@@ -50,14 +52,49 @@
         <a-form-item name="product" label="产品编号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="addUIForm['product']" placeholder="请输入"></a-input>
         </a-form-item>
-        <a-form-item name="num" label="生成数量" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-input v-model:value="addUIForm['count']" placeholder="请输入"></a-input>
+        <a-form-item name="serialNumber" label="序列号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="addUIForm['serialNumber']" placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item name="num" label="选择企业" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="addUIForm['companyId']" :options="companyList"></a-select>
+          <company-select v-model:value="addUIForm['companyId']"></company-select>
         </a-form-item>
         <a-form-item name="num" label="选择企业产品型号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-select v-model:value="addUIForm['equipmentGroupId']" :options="serialGroupList"></a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
+    <a-modal v-model="generateUIVisible" title="生成序列号" @ok="generateUIOk" :maskClosable="false">
+      <a-form>
+        <a-form-item name="company" label="公司编号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="generateUIForm['company']" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="product" label="产品编号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="generateUIForm['product']" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="num" label="生成数量" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="generateUIForm['count']" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="num" label="选择企业" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <company-select v-model:value="generateUIForm['companyId']"></company-select>
+        </a-form-item>
+        <a-form-item name="num" label="选择企业产品型号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="generateUIForm['equipmentGroupId']" :options="serialGroupList"></a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
+    <a-modal v-model="updateGroupUIVisible" title="更改分组" @ok="updateGroupUIOk" :maskClosable="false">
+      <a-form>
+        <a-form-item name="id" label="ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }" style="display: none;">
+          <a-input v-model:value="updateGroupUIForm['id']" :disabled="true" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="serialNumber" label="序列号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateGroupUIForm['serialNumber']" :disabled="true" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item name="num" label="选择企业" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <company-select v-model:value="updateGroupUIForm['companyId']"></company-select>
+        </a-form-item>
+        <a-form-item name="num" label="选择企业产品型号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateGroupUIForm['equipmentGroupId']" :options="serialGroupList"></a-select>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -66,8 +103,9 @@
       
 <script>
 import StandardTable from '@/components/table/StandardTable';
+import CompanySelect from '@/components/obx/CompanySelect';
 import { mapState } from 'vuex';
-import { listSerial, exportSerialUrl, generateSerial, delSerial, validSerial } from '@/services/serial';
+import { listSerial, exportSerialUrl, generateSerial, delSerial, validSerial, addSerial, updateSerialGroup } from '@/services/serial';
 import { listCompany } from '@/services/company';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
@@ -76,9 +114,16 @@ import { listSerialGroup } from '@/services/serialgroup';
 
 export default {
   name: 'SerialList',
-  components: { StandardTable },
+  components: { StandardTable, CompanySelect },
   data() {
     return {
+      updateGroupUIVisible: false,
+      updateGroupUIForm: {
+        id: '',
+        serialNumber: '',
+        companyId: '',
+        equipmentGroupId: ''
+      },
       validForm: {
         serialNumber: '',
       },
@@ -86,16 +131,19 @@ export default {
       addUIForm: {
         company: '',
         product: '',
+        serialNumber: '',
+        companyId: '',
+        equipmentGroupId: '',
+      },
+      generateUIVisible: false,
+      generateUIForm: {
+        company: '',
+        product: '',
         count: '',
         companyId: '',
-        equipment_group_id: '',
+        equipmentGroupId: '',
       },
       serialGroupList: [],
-      companyList: [],
-      companyListQuery: {
-        current: 1,
-        size: 200,
-      },
       endOpen: false,
       form: {
         serialNumber: '',
@@ -225,12 +273,11 @@ export default {
     },
     addUI() {
       const that = this;
-      that.queryCompanyList();
       that.addUIVisible = true;
     },
     addUIOk() {
       const that = this;
-      generateSerial({ ...that.addUIForm }).then((res) => {
+      addSerial({ ...that.addUIForm }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
@@ -241,38 +288,32 @@ export default {
         });
       });
     },
-    queryCompanyList() {
+    generateUI() {
       const that = this;
-      listCompany({ ...that.companyListQuery }).then((res) => {
+      that.generateUIVisible = true;
+    },
+    generateUIOk() {
+      const that = this;
+      generateSerial({ ...that.generateUIForm }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
         }
-        that.companyList = [];
-        that.companyList.push({
-          value: 0,
-          label: 'Obexx',
+        that.$message.success('操作成功', 1.5, () => {
+          that.init();
+          that.generateUIVisible = false;
         });
-        const data = r.data;
-        const records = data.records;
-        for (let idx in records) {
-          let item = records[idx];
-          that.companyList.push({
-            value: item.id,
-            label: item.name,
-          });
-        }
       });
     },
     disabledStartDate(startTime) {
-      const endTime = this.addUIForm.endTime;
+      const endTime = this.generateUIForm.endTime;
       if (!startTime || !endTime) {
         return false;
       }
       return startTime.valueOf() > endTime.valueOf();
     },
     disabledEndDate(endTime) {
-      const startTime = this.addUIForm.startValue;
+      const startTime = this.generateUIForm.startValue;
       if (!endTime || !startTime) {
         return false;
       }
@@ -308,20 +349,9 @@ export default {
         });
       });
     },
-  },
-  created() {
-    this.init();
-  },
-  computed: {
-    ...mapState('setting', ['pageMinHeight']),
-    desc() {
-      return this.$t('description');
-    }
-  },
-  watch: {
-    'addUIForm.companyId': function (newValue, oldValue) {
+    querySerialGroup(companyId) {
       const that = this;
-      listSerialGroup({current: 1, size: 1000000, companyId: newValue}).then(res => {
+      listSerialGroup({current: 1, size: 1000000, companyId: companyId}).then(res => {
         const r = res.data;
         if (r.code !== 200) {
           return;
@@ -337,6 +367,47 @@ export default {
         }
         that.serialGroupList = list;
       });
+    },
+    updateGroupUI(record) {
+      const that = this;
+      that.$util.clearObject(that.updateGroupUIForm, true);
+      that.$util.extend(true, that.updateGroupUIForm, record);
+      that.updateGroupUIVisible = true;
+    },
+    updateGroupUIOk() {
+      const that = this;
+      let param = {...that.updateGroupUIForm};
+      console.log('param:', param);
+      updateSerialGroup(param).then((res) => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        that.$message.success('操作成功', 1.5, () => {
+          that.queryList();
+          that.updateGroupUIVisible = false;
+        });
+      });
+    }
+  },
+  created() {
+    this.init();
+  },
+  computed: {
+    ...mapState('setting', ['pageMinHeight']),
+    desc() {
+      return this.$t('description');
+    }
+  },
+  watch: {
+    'addUIForm.companyId': function (newValue, oldValue) {
+      this.querySerialGroup(newValue);
+    },
+    'generateUIForm.companyId': function (newValue, oldValue) {
+      this.querySerialGroup(newValue);
+    },
+    'updateGroupUIForm.companyId': function(newValue, oldValue) {
+      this.querySerialGroup(newValue);
     }
   }
 };

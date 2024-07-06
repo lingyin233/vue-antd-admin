@@ -38,6 +38,8 @@ module.exports = {
   SERIAL_VALID: `${BASE_URL}/serial/valid`,
   SERIAL_GENERATE: `${BASE_URL}/serial/generate`,
   SERIAL_DEL: `${BASE_URL}/serial/del`,
+  SERIAL_ADD: `${BASE_URL}/serial/add`,
+  SERIAL_UPDATE_GROUP: `${BASE_URL}/serial/updateGroup`,
   SERIAL_GROUP_LIST: `${BASE_URL}/serial/group/list`,
   SERIAL_GROUP_DEL: `${BASE_URL}/serial/group/del`,
   SERIAL_GROUP_ADD: `${BASE_URL}/serial/group/add`,
