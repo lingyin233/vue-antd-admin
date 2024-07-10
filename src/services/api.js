@@ -21,6 +21,7 @@ module.exports = {
   APPEARANCE_ADD: `${BASE_URL}/appearance/add`,
   APPEARANCE_DEL: `${BASE_URL}/appearance/del`,
   QINIU_UPLOAD_TOKEN: `${BASE_URL}/qiniu/uploadtoken`,
+  QINIU_UPLOAD_MD5: `${BASE_URL}/qiniu/uploadmd5`,
   FEEDBACK_LIST: `${BASE_URL}/feedback/list`,
   FEEDBACK_UPDATE: `${BASE_URL}/feedback/update`,
   FEEDBACK_LIST_ATTACHMENT: `${BASE_URL}/feedback/listAttachment`,

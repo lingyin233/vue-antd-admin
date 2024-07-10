@@ -120,7 +120,7 @@
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
 import { listAppUpdate, addAppUpdate, delAppUpdate, pushStateAppUpdate } from '@/services/appupdate';
-import { qiniuUploadToken } from '@/services/common';
+import { qiniuUploadToken, qiniuUploadMd5 } from '@/services/common';
 import * as qiniu from 'qiniu-js';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
@@ -428,11 +428,14 @@ export default {
           }, (completeRes) => {
             console.log("complete", completeRes);
             const url = host + "/" + completeRes.key;
-            fetch(url + "?qhash/md5", {
-              method: 'GET',
-            }).then((res) => res.json()).then((res) => {
-              const hash = res['hash'];
-              const fsize = res['fsize'];
+            qiniuUploadMd5({url: url + "?qhash/md5"}).then((res) => {
+              const r = res.data;
+              if (r.code !== 200) {
+                return;
+              }
+              const data = JSON.parse(r.data);
+              const hash = data['hash'];
+              const fsize = data['fsize'];
               that.uploadCallback(url, hash, fsize);
             });
           });
