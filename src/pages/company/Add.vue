@@ -8,23 +8,23 @@
     <a-card :title="title">
       <a-form>
         <a-form-item label="用户名" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.username" placeholder="请输入" />
+          <a-input v-model:value="form.username" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="密码" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input-password v-model:value="form.password" placeholder="请输入" />
+          <a-input-password v-model:value="form.password" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="状态" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-select v-model:value="form['status']" placeholder="请选择" :options="statusList">
+          <a-select v-model:value="form['status']" placeholder="请选择 (必填)" :options="statusList">
           </a-select>
         </a-form-item>
         <a-form-item label="名称" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.name" placeholder="请输入" />
+          <a-input v-model:value="form.name" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="简称" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.shortName" placeholder="请输入" />
+          <a-input v-model:value="form.shortName" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="logo" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.logo" disabled placeholder="请输入" />
+          <a-input v-model:value="form.logo" disabled placeholder="请输入 (必填)" />
           <a-upload accept="image/*" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"
             :customRequest="customRequest">
             <a-button> <a-icon type="upload" /> 点击上传文件</a-button>
@@ -32,19 +32,19 @@
           <span>{{ percent }}</span>
         </a-form-item>
         <a-form-item label="地址" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.address" placeholder="请输入" />
+          <a-input v-model:value="form.address" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="简介" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-textarea v-model:value="form.introduction" placeholder="请输入" />
+          <a-textarea v-model:value="form.introduction" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="联系电话" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.mobile" placeholder="请输入" />
+          <a-input v-model:value="form.mobile" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="联系邮箱" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.email" placeholder="请输入" />
+          <a-input v-model:value="form.email" placeholder="请输入 (必填)" />
         </a-form-item>
         <a-form-item label="公司代号" :labelCol="{ span: 2 }" :wrapperCol="{ span: 12 }">
-          <a-input v-model:value="form.code" placeholder="请输入" :maxLength="2"/>
+          <a-input v-model:value="form.code" placeholder="请输入 (必填)" :maxLength="2"/>
         </a-form-item>
         <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 12, offset: 2 }">
           <a-button type="primary" @click="saveCompany()">保存</a-button>
