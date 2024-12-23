@@ -60,6 +60,12 @@
         <a-form-item name="id" label="APPID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <appid-select v-model:value="updateUIForm['appId']" disabled placeholder="请输入"></appid-select>
         </a-form-item>
+        <a-form-item name="sdkType" label="类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateUIForm['sdkType']" placeholder="请输入">
+            <a-select-option value="xunfei">讯飞</a-select-option>
+            <a-select-option value="microsoft">微软</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item name="skillName" label="技能名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['skillName']" placeholder="请输入"></a-input>
         </a-form-item>
@@ -157,6 +163,7 @@ export default {
         id: '',
         groupCode: '',
         appId: '',
+        sdkType: '',
       },
       updateUIVisible: false,
       updateUIForm: {
@@ -167,6 +174,7 @@ export default {
         sample: '',
         skillFullDesc: '',
         appId: '',
+        sdkType: '',
       },
       form: {
         appId: '',
@@ -239,6 +247,14 @@ export default {
           title: 'APPID',
           dataIndex: 'appId',
           key: 'appId',
+        },
+        {
+          title: '类型',
+          dataIndex: 'sdkType',
+          key: 'sdkType',
+          customRender: (text, row, index) => {
+            return 'microsoft' == text ? '微软' : 'xunfei' == text ? '讯飞' : '未知';
+          }
         },
         {
           title: '创建时间',
@@ -409,10 +425,16 @@ export default {
 
       that.updateGroupCodeUIVisible = true;
       that.updateGroupCodeUIForm['id'] = record.id;
+      that.updateGroupCodeUIForm['appId'] = record.appId;
+      that.updateGroupCodeUIForm['sdkType'] = record.sdkType;
 
       if (record.appId == '') {
         return;
       }
+      that.setSkillGroupList.push({
+        value: '',
+        label: '空'
+      });
 
       listSkillinfoGroup({ current: 1, size: 1000, appId: record.appId }).then((res) => {
         const r = res.data;
@@ -422,10 +444,12 @@ export default {
         const data = r.data;
         for (var idx in data.records) {
           const item = data.records[idx];
-          that.setSkillGroupList.push({
-            value: item.groupCode,
-            label: item.groupName,
-          });
+          if (item.sdkType == record.sdkType && item.appId == record.appId) {
+            that.setSkillGroupList.push({
+              value: item.groupCode,
+              label: item.groupName + ' | ' + (item.sdkType == 'microsoft' ? '微软' : 'xunfei' == item.sdkType ? '讯飞' : '未知'),
+            });
+          }
         }
       });
       that.updateGroupCodeUIForm['groupCode'] = record.groupCode;
