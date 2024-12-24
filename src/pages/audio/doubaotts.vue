@@ -4,27 +4,27 @@
       <a-form>
         <a-form-item label="发音人文档" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <span class="ant-form-text">
-            https://www.data-baker.com/dev-guide/?sign=30
+            https://www.volcengine.com/docs/6561/1257544
           </span>
         </a-form-item>
-        <a-form-item name="vcn" label="发音人" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-select show-search v-model:value="updateUIForm['voice_name']" :options="options" 
+        <a-form-item name="voiceType" label="发音人" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+          <a-select show-search v-model:value="updateUIForm['voiceType']" :options="options" 
           @search="v => onChangeSelect(v)" @blur="v => onGetValue(v)">
           </a-select>
         </a-form-item>
-        <a-form-item name="content" label="内容" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+        <a-form-item name="text" label="内容" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <a-textarea v-model:value="updateUIForm['text']"></a-textarea>
         </a-form-item>
-        <a-form-item name="speed" label="语速" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-slider v-model:value="updateUIForm['speed']" :min="0" :max="9" />
+        <a-form-item name="speedRatio" label="语速" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+          <a-slider v-model:value="updateUIForm['speedRatio']" :min="0.8" :max="2" />
         </a-form-item>
-        <a-form-item name="speed" label="音量" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-slider v-model:value="updateUIForm['volume']" :min="0" :max="9" />
+        <a-form-item name="volumeRatio" label="音量" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+          <a-slider v-model:value="updateUIForm['volumeRatio']" :min="0.8" :max="2" />
         </a-form-item>
-        <a-form-item name="speed" label="音高" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-slider v-model:value="updateUIForm['pitch']" :min="0" :max="9" />
+        <a-form-item name="pitchRatio" label="音高" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+          <a-slider v-model:value="updateUIForm['pitchRatio']" :min="0.8" :max="2" />
         </a-form-item>
-        <a-form-item name="content" label="试听" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+        <a-form-item name="data" label="试听" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <audio :src="dataurl" controls="controls"></audio>
         </a-form-item>
         <a-form-item :wrapperCol="{ span: 10, offset: 7 }">
@@ -38,36 +38,23 @@
 <script>
 import StandardTable from '@/components/table/StandardTable';
 import { mapState } from 'vuex';
-import { tts } from '@/services/baker';
+import { tts } from '@/services/doubao';
 import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 export default {
-  name: 'databaker_tts',
+  name: 'doubao_tts',
   components: { StandardTable },
   data() {
     return {
       updateUIForm: {
-        voice_name: '',
+        voiceType: 'zh_female_tianmeixiaoyuan_moon_bigtts',
         text: '',
-        speed: 5,
-        volume: 5,
-        pitch: 5
+        speedRatio: 1.0,
+        volumeRatio: 1.0,
+        pitchRatio: 1.0,
       },
       dataurl: '',
-      options: [
-        {
-          value: 'Jiaojiao',
-          label: '娇娇',
-        },
-        {
-          value: 'Guozi',
-          label: '果子',
-        },
-        {
-          value: 'Tiantian',
-          label: '天天',
-        },
-      ]
+      options: []
     };
   },
   methods: {
@@ -88,12 +75,12 @@ export default {
     },
     onChangeSelect(value) {
       const that = this;
-      that.updateUIForm['voice_name'] = value;
+      that.updateUIForm['voiceType'] = value;
       console.log('onChangeSelect:', value);
     },
     onGetValue(value) {
       const that = this;
-      that.updateUIForm['voice_name'] = value;
+      that.updateUIForm['voiceType'] = value;
       console.log('onGetValue:', value);
     },
   },

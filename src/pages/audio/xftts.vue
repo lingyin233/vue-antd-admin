@@ -2,6 +2,11 @@
   <div class="new-page" :style="`min-height: ${pageMinHeight}px`">
     <a-card title="语音合成">
       <a-form>
+        <a-form-item label="发音人文档" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+          <span class="ant-form-text">
+            https://aiui-doc.xf-yun.com/project-1/doc-93/
+          </span>
+        </a-form-item>
         <a-form-item name="vcn" label="发音人" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <a-select show-search v-model:value="updateUIForm['vcn']" :options="options" 
           @search="v => onChangeSelect(v)" @blur="v => onGetValue(v)">

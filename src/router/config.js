@@ -253,6 +253,11 @@ const options = {
               name: '标贝语音合成',
               component: () => import('@/pages/audio/bakertts')
             },
+            {
+              path: 'doubaotts',
+              name: '豆包语音合成',
+              component: () => import('@/pages/audio/doubaotts')
+            },
           ]
         },
         {
