@@ -73,23 +73,27 @@
           <a-select v-model:value="updateUIForm['sdkType']" placeholder="请选择" show-search  @search="v => onChangeSelect(v, 'sdkType')" @blur="v => onGetValue(v, 'sdkType')">
             <a-select-option value="databaker">标贝</a-select-option>
             <a-select-option value="xunfei">讯飞</a-select-option>
+            <a-select-option value="doubao">豆包</a-select-option>
+            <a-select-option value="microsoft">微软</a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item label="语言文档" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <span class="ant-form-text">
+            国内：普通话zh 英文eng 粤语cat<br>
+            海外：英文en-US 日语ja-JP<br>
+          </span>
+        </a-form-item>
         <a-form-item name="lang" label="语言" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateUIForm['lang']" placeholder="请选择" show-search @search="v => onChangeSelect(v, 'lang')" @blur="v => onGetValue(v, 'lang')">
-            <a-select-option value="zh">普通话</a-select-option>
-            <a-select-option value="eng">英文</a-select-option>
-            <a-select-option value="cat">粤语</a-select-option>
-            <a-select-option value="sch">四川话</a-select-option>
-            <a-select-option value="tjh">天津话</a-select-option>
-            <a-select-option value="tai">台湾话</a-select-option>
-            <a-select-option value="kr">韩语</a-select-option>
-            <a-select-option value="bra">巴葡语</a-select-option>
-            <a-select-option value="jp">日语</a-select-option>
-            <a-select-option value="ESP">西班牙西语</a-select-option>
-            <a-select-option value="MEX">墨西哥西语</a-select-option>
-            <a-select-option value="UYG">维吾尔语</a-select-option>
-          </a-select>
+          <a-input v-model:value="updateUIForm['lang']" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item label="sdk语言文档" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <span class="ant-form-text">
+            豆包：https://www.volcengine.com/docs/6561/97465<br>
+            标贝：https://www.data-baker.com/dev-guide/?sign=29<br>
+          </span>
+        </a-form-item>
+        <a-form-item name="sdkLang" label="sdk语言" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-input v-model:value="updateUIForm['sdkLang']" placeholder="请输入"></a-input>
         </a-form-item>
         <a-form-item name="userId" label="用户ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateUIForm['userId']" placeholder="请输入"></a-input>
@@ -169,6 +173,7 @@ export default {
         gender: '',
         sdkType: '',
         lang: '',
+        sdkLang: '',
       },
       form: {
       },
@@ -256,7 +261,15 @@ export default {
           dataIndex: 'lang',
           key: 'lang',
           customRender: (text, row, index) => {
-            return text == 'zh' ? '普通话' : text == 'cat' ? '粤语' : text;
+            return text == 'zh' ? '普通话' : text == 'cat' ? '粤语' : text == 'eng' ? '英语' : text;
+          }
+        },
+        {
+          title: 'sdk语言',
+          dataIndex: 'sdkLang',
+          key: 'sdkLang',
+          customRender: (text, row, index) => {
+            return text;
           }
         },
         {
