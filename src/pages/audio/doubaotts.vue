@@ -4,7 +4,7 @@
       <a-form>
         <a-form-item label="发音人文档" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <span class="ant-form-text">
-            https://www.volcengine.com/docs/6561/1257544
+            https://www.volcengine.com/docs/6561/97465#%E5%A4%9A%E6%83%85%E6%84%9F-%E9%A3%8E%E6%A0%BC-%E8%AF%AD%E8%A8%80%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E5%8F%82%E8%80%83
           </span>
         </a-form-item>
         <a-form-item name="voiceType" label="发音人" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
@@ -23,6 +23,9 @@
         </a-form-item>
         <a-form-item name="pitchRatio" label="音高" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <a-slider v-model:value="updateUIForm['pitchRatio']" :min="0.8" :max="2" />
+        </a-form-item>
+        <a-form-item name="language" label="语言" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
+          <a-input v-model:value="updateUIForm['language']"></a-input>
         </a-form-item>
         <a-form-item name="data" label="试听" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <audio :src="dataurl" controls="controls"></audio>
@@ -52,6 +55,7 @@ export default {
         speedRatio: 1.0,
         volumeRatio: 1.0,
         pitchRatio: 1.0,
+        language: 'cn'
       },
       dataurl: '',
       options: []
