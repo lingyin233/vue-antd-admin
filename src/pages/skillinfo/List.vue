@@ -36,7 +36,7 @@
         <standard-table :columns="columns" :dataSource="list" :row-key="record => record.id"
           :pagination="{ ...pagination, onChange: onPageChange }">
           <div slot="skillIcon" slot-scope="{text, record}">
-            <a-avatar size="large" :src="record.skillIcon"></a-avatar>
+            <a-avatar size="large" :src="$util.replace(record.skillIcon, 'http:', '')"></a-avatar>
           </div>
           <div slot="action" slot-scope="{text, record}">
             <div><a href="javascript:void(0);" type="primary" @click="updateUI(record)" style="margin: 2px;">编辑</a></div>

@@ -213,3 +213,7 @@ export function contains(array, fn) {
   }
   return false;
 }
+
+export function replace(str, oldStr, newStr) {
+  return str.replace(oldStr, newStr);
+}
