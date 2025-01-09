@@ -240,7 +240,7 @@ export default {
             if (item == null) {
               return text;
             }
-            return item.label;
+            return item.shortLabel;
           }
         },
         {
@@ -359,6 +359,7 @@ export default {
           that.skillGroupList.push({
             value: item['groupCode'],
             label: item['groupName'] + " | " + item['groupCode'] + " | " + item.appId + " | " + item.sdkType,
+            shortLabel: item['groupName'] + " | " + item['groupCode'],
           });
         }
       });
