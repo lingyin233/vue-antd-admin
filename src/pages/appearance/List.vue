@@ -44,6 +44,7 @@
           <div slot="gender" slot-scope="{text, record}">
             <span v-if="record.gender == 1">男</span>
             <span v-else-if="record.gender == 2">女</span>
+            <span v-else-if="record.gender == 3">其他</span>
           </div>
           <div slot="picUrl" slot-scope="{text, record}">
             <img style="width: 50px; height: 80px;" :src="record.picUrl" />
@@ -51,6 +52,7 @@
           <div slot="type" slot-scope="{text, record}">
             <span v-if="record.type == 0">系统</span>
             <span v-if="record.type == 1">常规</span>
+            <span v-if="record.type == -1">禁用</span>
           </div>
           <div slot="status" slot-scope="{text, record}">
             <span v-if="record.status == 0">删除</span>

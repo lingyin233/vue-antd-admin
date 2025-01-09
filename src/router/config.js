@@ -159,10 +159,15 @@ const options = {
           component: BlankView,
           children: [
             {
+              path: 'listgroup',
+              name: '个人形象分组列表',
+              component: () => import('@/pages/appearance/ListGroup')
+            },
+            {
               path: 'list',
               name: '个人形象列表',
               component: () => import('@/pages/appearance/List')
-            }
+            },
           ]
         },
         {

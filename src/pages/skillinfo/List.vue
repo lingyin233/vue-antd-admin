@@ -358,7 +358,7 @@ export default {
           var item = data.records[i];
           that.skillGroupList.push({
             value: item['groupCode'],
-            label: item['groupName'] + " " + item['groupCode'],
+            label: item['groupName'] + " | " + item['groupCode'] + " | " + item.appId + " | " + item.sdkType,
           });
         }
       });
