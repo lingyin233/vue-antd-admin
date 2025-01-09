@@ -16,13 +16,13 @@
           <a-textarea v-model:value="updateUIForm['text']"></a-textarea>
         </a-form-item>
         <a-form-item name="speedRatio" label="语速" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-slider v-model:value="updateUIForm['speedRatio']" :min="0.8" :max="2" />
+          <a-slider v-model:value="updateUIForm['speedRatio']" :min="0.8" :max="2.01" :step="0.1" />
         </a-form-item>
         <a-form-item name="volumeRatio" label="音量" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-slider v-model:value="updateUIForm['volumeRatio']" :min="0.8" :max="2" />
+          <a-slider v-model:value="updateUIForm['volumeRatio']" :min="0.8" :max="2.01" :step="0.1" />
         </a-form-item>
         <a-form-item name="pitchRatio" label="音高" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
-          <a-slider v-model:value="updateUIForm['pitchRatio']" :min="0.8" :max="2" />
+          <a-slider v-model:value="updateUIForm['pitchRatio']" :min="0.8" :max="2.01" :step="0.1" />
         </a-form-item>
         <a-form-item name="language" label="语言" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }">
           <a-input v-model:value="updateUIForm['language']"></a-input>
