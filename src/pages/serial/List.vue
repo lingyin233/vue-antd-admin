@@ -19,6 +19,13 @@
               </a-form-item>
             </a-col>
           </a-row>
+          <a-row>
+            <a-col :md="8" :sm="24">
+              <a-form-item name="equipmentGroupId" label="设备分组ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <a-select v-model:value="form['equipmentGroupId']" :options="serialGroupList2"></a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
           <span style="margin-top: 3px;">
             <a-button type="primary" @click="queryList()">查询</a-button>
             <a-button style="margin-left: 8px" @click="$util.clearObject(form, true)">重置</a-button>
@@ -58,7 +65,7 @@
         <a-form-item name="num" label="选择企业" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <company-select v-model:value="addUIForm['companyId']"></company-select>
         </a-form-item>
-        <a-form-item name="num" label="选择企业产品型号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+        <a-form-item name="equipmentGroupId" label="选择企业产品型号" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-select v-model:value="addUIForm['equipmentGroupId']" :options="serialGroupList"></a-select>
         </a-form-item>
       </a-form>
@@ -144,11 +151,13 @@ export default {
         equipmentGroupId: '',
       },
       serialGroupList: [],
+      serialGroupList2: [],
       endOpen: false,
       form: {
         serialNumber: '',
         startTime: '',
         endTime: '',
+        equipmentGroupId: ''
       },
       pagination: {
         current: 1,
@@ -229,6 +238,7 @@ export default {
     },
     init() {
       this.queryList();
+      this.querySerialGroup(null, 2);
     },
     queryList() {
       const that = this;
@@ -349,7 +359,7 @@ export default {
         });
       });
     },
-    querySerialGroup(companyId) {
+    querySerialGroup(companyId, type) {
       const that = this;
       listSerialGroup({current: 1, size: 1000000, companyId: companyId}).then(res => {
         const r = res.data;
@@ -365,7 +375,11 @@ export default {
           const item = data.records[idx];
           list.push({ key: item.id, title: item.groupName + " | " + item.groupCode + " | " + item.id });
         }
-        that.serialGroupList = list;
+        if (type == 2) {
+          that.serialGroupList2 = list;
+        } else {
+          that.serialGroupList = list;
+        }
       });
     },
     updateGroupUI(record) {
