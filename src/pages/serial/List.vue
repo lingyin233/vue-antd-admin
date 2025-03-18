@@ -21,6 +21,9 @@
           </a-row>
           <a-row>
             <a-col :md="8" :sm="24">
+              <a-form-item name="companyId" label="企业ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+                <company-select v-model:value="form['companyId']"></company-select>
+              </a-form-item>
               <a-form-item name="equipmentGroupId" label="设备分组ID" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
                 <a-select v-model:value="form['equipmentGroupId']" :options="serialGroupList2"></a-select>
               </a-form-item>
@@ -157,6 +160,7 @@ export default {
         serialNumber: '',
         startTime: '',
         endTime: '',
+        companyId: '',
         equipmentGroupId: ''
       },
       pagination: {
@@ -238,7 +242,6 @@ export default {
     },
     init() {
       this.queryList();
-      this.querySerialGroup(null, 2);
     },
     queryList() {
       const that = this;
@@ -422,6 +425,9 @@ export default {
     },
     'updateGroupUIForm.companyId': function(newValue, oldValue) {
       this.querySerialGroup(newValue);
+    },
+    'form.companyId': function (newValue, oldValue) {
+      this.querySerialGroup(newValue, 2);
     }
   }
 };
