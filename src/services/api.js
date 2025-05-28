@@ -20,6 +20,7 @@ module.exports = {
   APPEARANCE_LIST: `${BASE_URL}/appearance/list`,
   APPEARANCE_ADD: `${BASE_URL}/appearance/add`,
   APPEARANCE_DEL: `${BASE_URL}/appearance/del`,
+  APPUPDATE_UPDATE_I18N: `${BASE_URL}//app/update/updateI18n`,
   QINIU_UPLOAD_TOKEN: `${BASE_URL}/qiniu/uploadtoken`,
   QINIU_UPLOAD_MD5: `${BASE_URL}/qiniu/uploadmd5`,
   FEEDBACK_LIST: `${BASE_URL}/feedback/list`,
