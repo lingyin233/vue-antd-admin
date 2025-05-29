@@ -473,7 +473,6 @@ export default {
       console.log('record', record);
       that.langFieldOptions = that.$util.filter(that.columns, (e) => that.$util.contains(['skillName', 'skillShortDesc', 'skillFullDesc', 'sample'], (e1) => e1 == e.key));
       that.langSelect = '';
-
       // clear
       that.i18nUIForm = {};
       that.i18nUIVisible = true;

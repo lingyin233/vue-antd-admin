@@ -52,6 +52,7 @@ module.exports = {
   APPUPDATE_ADD: `${BASE_URL}/app/update/add`,
   APPUPDATE_DEL: `${BASE_URL}/app/update/del`,
   APPUPDATE_PUSHSTATE: `${BASE_URL}/app/update/pushState`,
+  APPUPDATE_UPDATE_I18N: `${BASE_URL}/app/update/updateI18n`,
   VOICE_LIST: `${BASE_URL}/voice/list`,
   VOICE_UPDATE: `${BASE_URL}/voice/update`,
   VOICE_DEL: `${BASE_URL}/voice/del`,
