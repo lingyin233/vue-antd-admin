@@ -103,9 +103,12 @@
             <div>版本内容：{{ record.versionContent }}</div>
             <div>灰度配置：{{ record.grayReleaseJson }}</div>
             <div>下载地址：{{ record.url }}</div>    
-            <div>国际化：语言：{{ langSelect.label }} </div>  
-            <div>国际化：版本内容：{{ record.i18n  }}</div>  
-              
+            <div v-if="record.parsedI18n">           
+            <div v-for="(content, lang) in record.parsedI18n" :key="lang"> 
+            <div>语言：{{ lang }}</div>     
+            <p>版本内容：{{ content.versionContent }}</p>
+               </div>
+             </div>               
           </div>
         </standard-table>
       </div>
@@ -406,12 +409,11 @@ import { Modal } from "ant-design-vue";
 import moment from "moment";
 import CompanySelect from "@/components/obx/CompanySelect";
 import { listSerialGroup } from "@/services/serialgroup";
-
 export default {
   name: "AppUpdateList",
   components: { StandardTable, CompanySelect },
   data() {
-    return {
+    return {      
       i18nUIVisible: false,
       i18nUIForm: {},
       langFieldOptions: [],    
@@ -585,11 +587,11 @@ export default {
     },      
     i18nUI(record) {
       const that = this;
-      console.log("record", record);     
+      console.log("record", record);        
       that.langFieldOptions = that.$util.filter(that.columns, (e) =>
         that.$util.contains(["versionContent"], (e1) => e1 == e.key)
       );
-      // that.langSelect = "";
+      that.langSelect = "";
       // clear
       that.i18nUIForm = {};
       that.i18nUIVisible = true;
@@ -719,12 +721,27 @@ export default {
       }).then((res) => {
         const r = res.data;
         if (r.code === 200) {
-          const data = r.data;
-          that.list = data.records;
+          const data = r.data;                  
+          that.list = data.records.map(item =>{
+            const newItem = { ...item };
+            // 解析i18n
+            if (newItem.i18n && typeof newItem.i18n === 'string') {
+              try {
+                newItem.parsedI18n = JSON.parse(newItem.i18n);
+              } catch (e) {
+                console.error('解析i18n失败', e);
+                newItem.parsedI18n = {};
+              }
+            } else {
+              newItem.parsedI18n = newItem.i18n || {};
+            }
+            return newItem;
+          });        
+          console.log(that.list);            
           that.pagination = {
             current: parseInt(data.current),
             pageSize: parseInt(data.size),
-            total: parseInt(data.total),
+            total: parseInt(data.total),           
           };
         }
       });
@@ -899,7 +916,7 @@ export default {
     ...mapState("setting", ["pageMinHeight"]),
     desc() {
       return this.$t("description");
-    },
+    },    
   },
   watch: {
     "updateUIForm.companyId": function (newValue, oldValue) {
