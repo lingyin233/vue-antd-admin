@@ -102,7 +102,10 @@
           >
             <div>版本内容：{{ record.versionContent }}</div>
             <div>灰度配置：{{ record.grayReleaseJson }}</div>
-            <div>下载地址：{{ record.url }}</div>
+            <div>下载地址：{{ record.url }}</div>    
+            <div>国际化：语言：{{ langSelect.label }} </div>  
+            <div>国际化：版本内容：{{ record.i18n  }}</div>  
+              
           </div>
         </standard-table>
       </div>
@@ -320,7 +323,7 @@
           <a-select
             v-model:value="langSelect"
             @change="(option) => langChange(option)"
-            labelInValue
+            labelInValue            
           >
             <a-select-option value="">无</a-select-option>
             <a-select-option value="en_GB">英语-英国</a-select-option>
@@ -342,7 +345,7 @@
           label="语言"
           :labelCol="{ span: 5 }"
           :wrapperCol="{ span: 18, offset: 1 }"
-        >
+        >          
           <a-input v-model:value="item['lang']"></a-input>
         </a-form-item>
         <a-form-item
@@ -411,8 +414,8 @@ export default {
     return {
       i18nUIVisible: false,
       i18nUIForm: {},
-      langFieldOptions: [],
-      langSelect: "",
+      langFieldOptions: [],    
+      langSelect: [],
       module: "appupdate",
       fileList: [],
       percent: 0,
@@ -579,14 +582,14 @@ export default {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
       this.query();
-    },
+    },      
     i18nUI(record) {
       const that = this;
-      console.log("record", record);
+      console.log("record", record);     
       that.langFieldOptions = that.$util.filter(that.columns, (e) =>
         that.$util.contains(["versionContent"], (e1) => e1 == e.key)
       );
-      that.langSelect = "";
+      // that.langSelect = "";
       // clear
       that.i18nUIForm = {};
       that.i18nUIVisible = true;
