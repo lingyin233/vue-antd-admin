@@ -95,7 +95,7 @@
             </div>
           </div>
 
-          <div
+        <div
             slot="expandedRowRender"
             slot-scope="{ text, record }"
             style="margin: 0"
@@ -103,10 +103,10 @@
             <div>版本内容：{{ record.versionContent }}</div>
             <div>灰度配置：{{ record.grayReleaseJson }}</div>
             <div>下载地址：{{ record.url }}</div>    
-            <div v-if="record.parsedI18n">           
-            <div v-for="(content, lang) in record.parsedI18n" :key="lang"> 
-            <div>语言：{{ lang }}</div>     
-            <p>版本内容：{{ content.versionContent }}</p>
+            <div v-if="record.parsedI18n">                      
+            <div v-for="(content, lang) in record.parsedI18n" :key="lang">
+              <div> 国际化：语言：{{ lang }}</div>              
+              <div style="margin-left: 56px;">版本内容：{{ content.versionContent }}</div>
                </div>
              </div>               
           </div>
@@ -736,8 +736,7 @@ export default {
               newItem.parsedI18n = newItem.i18n || {};
             }
             return newItem;
-          });        
-          console.log(that.list);            
+          });                     
           that.pagination = {
             current: parseInt(data.current),
             pageSize: parseInt(data.size),
