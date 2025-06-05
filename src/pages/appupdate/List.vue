@@ -76,15 +76,6 @@
             >
               <a href="javascript:void(0);" type="primary">删除</a>
             </a-popconfirm>
-            <a
-              v-if="record.push == 0"
-              href="javascript:void(0);"
-              @click="push(record)"
-              >开启推送</a
-            >
-            <a v-else href="javascript:void(0);" @click="push(record)"
-              >关闭推送</a
-            >
             <div>
               <a
                 href="javascript:void(0);"
@@ -94,21 +85,37 @@
               >
             </div>
           </div>
-
-        <div
+          <div slot="pushTo" slot-scope="{ text, record }">
+            <a-switch :checked="record.push != 0" @change="() => push(record)">
+              <a-icon slot="checkedChildren" type="check" />
+              <a-icon slot="unCheckedChildren" type="close" />
+            </a-switch>
+          </div>
+          <div slot="forceUpdates" slot-scope="{ text, record }">
+            <a-switch
+              :checked="record.force != 0"
+              @change="() => pushForce(record)"
+            >
+              <a-icon slot="checkedChildren" type="check" />
+              <a-icon slot="unCheckedChildren" type="close" />
+            </a-switch>
+          </div>
+          <div
             slot="expandedRowRender"
             slot-scope="{ text, record }"
             style="margin: 0"
           >
             <div>版本内容：{{ record.versionContent }}</div>
             <div>灰度配置：{{ record.grayReleaseJson }}</div>
-            <div>下载地址：{{ record.url }}</div>    
-            <div v-if="record.parsedI18n">                      
-            <div v-for="(content, lang) in record.parsedI18n" :key="lang">
-              <div> 国际化：语言：{{ lang }}</div>              
-              <div style="margin-left: 56px;">版本内容：{{ content.versionContent }}</div>
-               </div>
-             </div>               
+            <div>下载地址：{{ record.url }}</div>
+            <div v-if="record.parsedI18n">
+              <div v-for="(content, lang) in record.parsedI18n" :key="lang">
+                <div>国际化：语言：{{ lang }}</div>
+                <div style="margin-left: 56px">
+                  版本内容：{{ content.versionContent }}
+                </div>
+              </div>
+            </div>
           </div>
         </standard-table>
       </div>
@@ -326,7 +333,7 @@
           <a-select
             v-model:value="langSelect"
             @change="(option) => langChange(option)"
-            labelInValue            
+            labelInValue
           >
             <a-select-option value="">无</a-select-option>
             <a-select-option value="en_GB">英语-英国</a-select-option>
@@ -348,7 +355,7 @@
           label="语言"
           :labelCol="{ span: 5 }"
           :wrapperCol="{ span: 18, offset: 1 }"
-        >          
+        >
           <a-input v-model:value="item['lang']"></a-input>
         </a-form-item>
         <a-form-item
@@ -402,6 +409,7 @@ import {
   addAppUpdate,
   delAppUpdate,
   pushStateAppUpdate,
+  forceStateAppUpdate,
 } from "@/services/appupdate";
 import { qiniuUploadToken, qiniuUploadMd5 } from "@/services/common";
 import * as qiniu from "qiniu-js";
@@ -413,10 +421,10 @@ export default {
   name: "AppUpdateList",
   components: { StandardTable, CompanySelect },
   data() {
-    return {      
+    return {
       i18nUIVisible: false,
       i18nUIForm: {},
-      langFieldOptions: [],    
+      langFieldOptions: [],
       langSelect: [],
       module: "appupdate",
       fileList: [],
@@ -541,7 +549,13 @@ export default {
           key: "grayRelease",
           ellipsis: true,
           customRender: (text, row, index) => {
-            return text == "0" ? "无" : text == "1" ? "白名单" : text == "2" ? "比例" : "";
+            return text == "0"
+              ? "无"
+              : text == "1"
+                ? "白名单"
+                : text == "2"
+                  ? "比例"
+                  : "";
           },
         },
         {
@@ -573,6 +587,18 @@ export default {
           key: "action",
           scopedSlots: { customRender: "action" },
         },
+        {
+          title: "开启/关闭推送",
+          dataIndex: "pushTo",
+          key: "pushTo",
+          scopedSlots: { customRender: "pushTo" },
+        },
+        {
+          title: "强制更新",
+          dataIndex: "forceUpdates",
+          key: "forceUpdates",
+          scopedSlots: { customRender: "forceUpdates" },
+        },
       ],
       isDevice: false,
       serialGroupList: [],
@@ -584,10 +610,10 @@ export default {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
       this.query();
-    },      
+    },
     i18nUI(record) {
       const that = this;
-      console.log("record", record);        
+      console.log("record", record);
       that.langFieldOptions = that.$util.filter(that.columns, (e) =>
         that.$util.contains(["versionContent"], (e1) => e1 == e.key)
       );
@@ -721,26 +747,26 @@ export default {
       }).then((res) => {
         const r = res.data;
         if (r.code === 200) {
-          const data = r.data;                  
-          that.list = data.records.map(item =>{
+          const data = r.data;
+          that.list = data.records.map((item) => {
             const newItem = { ...item };
             // 解析i18n
-            if (newItem.i18n && typeof newItem.i18n === 'string') {
+            if (newItem.i18n && typeof newItem.i18n === "string") {
               try {
                 newItem.parsedI18n = JSON.parse(newItem.i18n);
               } catch (e) {
-                console.error('解析i18n失败', e);
+                console.error("解析i18n失败", e);
                 newItem.parsedI18n = {};
               }
             } else {
               newItem.parsedI18n = newItem.i18n || {};
             }
             return newItem;
-          });                     
+          });
           that.pagination = {
             current: parseInt(data.current),
             pageSize: parseInt(data.size),
-            total: parseInt(data.total),           
+            total: parseInt(data.total),
           };
         }
       });
@@ -811,6 +837,21 @@ export default {
           that.init();
         });
       });
+    },
+    pushForce(record) {
+      const that = this;
+      forceStateAppUpdate({
+        id: record.id,
+        force: record.force == 1 ? 0 : 1,
+      }).then((res) => {
+        const r = res.data;
+        if (r.code != 200) {
+          return;
+        }
+        that.$message.success("操作成功", 1.5, () => {
+          that.init();
+        });
+      });      
     },
     handleRemove(file) {
       const index = this.fileList.indexOf(file);
@@ -915,7 +956,7 @@ export default {
     ...mapState("setting", ["pageMinHeight"]),
     desc() {
       return this.$t("description");
-    },    
+    },
   },
   watch: {
     "updateUIForm.companyId": function (newValue, oldValue) {

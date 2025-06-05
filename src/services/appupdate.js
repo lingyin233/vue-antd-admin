@@ -1,5 +1,5 @@
 import { request, METHOD } from "@/utils/request";
-import {  APPUPDATE_LIST,  APPUPDATE_ADD,  APPUPDATE_DEL,  APPUPDATE_PUSHSTATE,  APPUPDATE_UPDATE_I18N,} from "./api";
+import {  APPUPDATE_LIST,  APPUPDATE_ADD,  APPUPDATE_DEL,  APPUPDATE_PUSHSTATE,  APPUPDATE_UPDATE_I18N, APPUPDATE_FORCESTATE} from "./api";
 
 export function listAppUpdate(param) {
   return request(APPUPDATE_LIST, METHOD.GET, param);
@@ -20,6 +20,9 @@ export function pushStateAppUpdate(param) {
 export function updateI18NAppUpdate(param) {
   return request(APPUPDATE_UPDATE_I18N, METHOD.POST, param);
 }
+export function forceStateAppUpdate(param) {
+  return request(APPUPDATE_FORCESTATE, METHOD.GET, param);
+}
 
 export default {
   listAppUpdate,
@@ -27,4 +30,5 @@ export default {
   delAppUpdate,
   pushStateAppUpdate,
   updateI18NAppUpdate,
+  forceStateAppUpdate,
 };
