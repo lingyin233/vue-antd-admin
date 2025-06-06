@@ -62,12 +62,12 @@
         <a-space class="operator">
           <a-button type="primary" @click="addUI()">添加</a-button>
         </a-space>
-        <standard-table
-          :columns="columns"
+        <standard-table   
+          :columns="columns"          
           :dataSource="list"
           :row-key="(record) => record.id"
-          :pagination="{ ...pagination, onChange: onPageChange }"
-        >
+          :pagination="{ ...pagination, onChange: onPageChange }"             
+           >                     
           <div slot="action" slot-scope="{ text, record }">
             <a-popconfirm
               title="确认删除？"
@@ -490,47 +490,56 @@ export default {
           title: "ID",
           dataIndex: "id",
           key: "id",
+          width: 80,  
         },
         {
           title: "应用ID",
           dataIndex: "applicationId",
           key: "applicationId",
+          width: 80,  
         },
         {
           title: "类型",
           dataIndex: "type",
           key: "type",
+          width: 80,  
         },
         {
           title: "整数版本号",
           dataIndex: "versionCode",
           key: "versionCode",
+          width: 80,  
         },
         {
           title: "版本名称",
           dataIndex: "versionName",
           key: "versionName",
+          width: 80,  
         },
         {
-          title: "版本内容",
+          title: "版本内容", 
           dataIndex: "versionContent",
           key: "versionContent",
           ellipsis: true,
+          width: 100,          
         },
         {
           title: "大小",
           dataIndex: "appSize",
           key: "appSize",
+          width: 80,  
         },
         {
           title: "hash",
           dataIndex: "hashValue",
           key: "hashValue",
+          width: 80,  
         },
         {
           title: "是否强制升级",
           dataIndex: "force",
           key: "force",
+          width: 80,  
           customRender: (text, row, index) => {
             return text == "1" ? "是" : text == "0" ? "否" : "";
           },
@@ -539,6 +548,7 @@ export default {
           title: "是否推送",
           dataIndex: "push",
           key: "push",
+          width: 80,  
           customRender: (text, row, index) => {
             return text == "1" ? "是" : text == "0" ? "否" : "";
           },
@@ -547,6 +557,7 @@ export default {
           title: "灰度",
           dataIndex: "grayRelease",
           key: "grayRelease",
+          width: 80,  
           ellipsis: true,
           customRender: (text, row, index) => {
             return text == "0"
@@ -562,21 +573,25 @@ export default {
           title: "灰度配置",
           dataIndex: "grayReleaseJson",
           key: "grayReleaseJson",
+          width: 80,  
         },
         {
           title: "渠道",
           dataIndex: "companyName",
           key: "companyName",
+          width: 80,  
         },
         {
           title: "设备",
           dataIndex: "deviceGroupName",
           key: "deviceGroupName",
+          width: 80,  
         },
         {
           title: "创建时间",
           dataIndex: "createTime",
           key: "createTime",
+          width: 80,  
           customRender: (text, row, index) => {
             return moment(text).format("YYYY-MM-DD HH:mm");
           },
@@ -585,18 +600,21 @@ export default {
           title: "操作",
           dataIndex: "action",
           key: "action",
+          width: 80,  
           scopedSlots: { customRender: "action" },
         },
         {
           title: "开启/关闭推送",
           dataIndex: "pushTo",
           key: "pushTo",
+          width: 80,  
           scopedSlots: { customRender: "pushTo" },
         },
         {
           title: "强制更新",
           dataIndex: "forceUpdates",
           key: "forceUpdates",
+          width: 80,  
           scopedSlots: { customRender: "forceUpdates" },
         },
       ],
