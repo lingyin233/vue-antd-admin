@@ -62,13 +62,30 @@
         <a-space class="operator">
           <a-button type="primary" @click="addUI()">添加</a-button>
         </a-space>
-        <standard-table   
+        <standard-table  
           :columns="columns"          
-          :dataSource="list"
+          :dataSource="list"          
           :row-key="(record) => record.id"
-          :pagination="{ ...pagination, onChange: onPageChange }"             
-           >                     
-          <div slot="action" slot-scope="{ text, record }">
+          :pagination="{ ...pagination, onChange: onPageChange }" 
+          :scroll ="{x:2000}"                            
+           >       
+         
+          <div slot="pushTo" slot-scope="{ text, record }">
+            <a-switch :checked="record.push != 0" @change="() => push(record)">
+              <a-icon slot="checkedChildren" type="check" />
+              <a-icon slot="unCheckedChildren" type="close" />
+            </a-switch>
+          </div>
+          <div slot="forceUpdates" slot-scope="{ text, record }">
+            <a-switch
+              :checked="record.force != 0"
+              @change="() => pushForce(record)"
+            >
+              <a-icon slot="checkedChildren" type="check" />
+              <a-icon slot="unCheckedChildren" type="close" />
+            </a-switch>
+          </div>
+           <div slot="action" slot-scope="{ text, record }">
             <a-popconfirm
               title="确认删除？"
               @confirm="del(record)"
@@ -84,21 +101,6 @@
                 >国际化</a
               >
             </div>
-          </div>
-          <div slot="pushTo" slot-scope="{ text, record }">
-            <a-switch :checked="record.push != 0" @change="() => push(record)">
-              <a-icon slot="checkedChildren" type="check" />
-              <a-icon slot="unCheckedChildren" type="close" />
-            </a-switch>
-          </div>
-          <div slot="forceUpdates" slot-scope="{ text, record }">
-            <a-switch
-              :checked="record.force != 0"
-              @change="() => pushForce(record)"
-            >
-              <a-icon slot="checkedChildren" type="check" />
-              <a-icon slot="unCheckedChildren" type="close" />
-            </a-switch>
           </div>
           <div
             slot="expandedRowRender"
@@ -595,14 +597,7 @@ export default {
           customRender: (text, row, index) => {
             return moment(text).format("YYYY-MM-DD HH:mm");
           },
-        },
-        {
-          title: "操作",
-          dataIndex: "action",
-          key: "action",
-          width: 80,  
-          scopedSlots: { customRender: "action" },
-        },
+        },     
         {
           title: "开启/关闭推送",
           dataIndex: "pushTo",
@@ -616,7 +611,14 @@ export default {
           key: "forceUpdates",
           width: 80,  
           scopedSlots: { customRender: "forceUpdates" },
-        },
+        },  
+        {
+          title: "操作",
+          dataIndex: "action",
+          key: "action",
+          width: 80,  
+          scopedSlots: { customRender: "action" },
+        },    
       ],
       isDevice: false,
       serialGroupList: [],
@@ -997,7 +999,10 @@ export default {
       
 <style scoped lang="less">
 @import "index";
-
+.new-page{
+  overflow-x: auto;
+  width:100%;
+  }
 .search {
   margin-bottom: 54px;
 }
