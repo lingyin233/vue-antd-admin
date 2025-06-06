@@ -177,5 +177,8 @@ export default {
       float: right;
     }
   }
+  overflow: hidden;
+  overflow: auto;
+  max-width: 100%;
 }
 </style>
