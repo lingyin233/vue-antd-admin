@@ -49,12 +49,12 @@
           :columns="columns"
           :data-source="list"
           :rowKey="(record) => record.id"
-          :pagination="{ ...pagination, onChange: onPageChange }"          
+          :pagination="{ ...pagination, onChange: onPageChange }"
         >
           <div slot="status" slot-scope="text, record">
-            <a-switch 
-            :checked="record.status != 0"
-            @change="() => pushStatus(record)"          
+            <a-switch
+              :checked="record.status != 1"
+              @change="() => pushStatus(record)"
               checked-children="启用"
               un-checked-children="禁用"
             />
@@ -196,29 +196,31 @@ export default {
       this.queryList();
     },
     queryList() {
-      this.loading = true; 
+      this.loading = true;
       const that = this;
       otherDeviceList({
         current: that.pagination.current,
         size: that.pagination.pageSize,
         ...that.form,
-      }).then((res) => {
-        const r = res.data;
-        if (r.code !== 200) {
-          return;
-        }
-        const data = r.data;
-        console.log("API 返回的数据:", r.data.records);
-        that.list = data.records || [];
-        that.pagination = {
-          total: parseInt(data.total),
-          current: parseInt(data.current),
-          pageSize: parseInt(data.size),
-        };
-        this.loading = false;
-      }).catch(() => {
-        this.loading = false;
-      });
+      })
+        .then((res) => {
+          const r = res.data;
+          if (r.code !== 200) {
+            return;
+          }
+          const data = r.data;
+          console.log("API 返回的数据:", r.data.records);
+          that.list = data.records || [];
+          that.pagination = {
+            total: parseInt(data.total),
+            current: parseInt(data.current),
+            pageSize: parseInt(data.size),
+          };
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     addUI() {
       const that = this;
@@ -237,16 +239,16 @@ export default {
           that.init();
           that.addUIVisible = false;
         });
-      });
+      });     
     },
     stateChange(checked) {
       this.addUIForm["status"] = checked ? 1 : 0;
     },
-    pushStatus(record) {      
+    pushStatus(record) {
       const that = this;
       otherDeviceUpdateStatus({
         id: record.id,
-        status: record.status == 1 ? 0 : 1,
+        status: record.status == 0 ? 1 : 0,
       }).then((res) => {
         const r = res.data;
         if (r.code != 200) {
