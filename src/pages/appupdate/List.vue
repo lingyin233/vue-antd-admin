@@ -492,7 +492,7 @@ export default {
           title: "ID",
           dataIndex: "id",
           key: "id",
-          width: 80,  
+          width: 60,  
         },
         {
           title: "应用ID",
@@ -1010,4 +1010,5 @@ export default {
 .operator {
   margin-bottom: 18px;
 }
+
 </style>
