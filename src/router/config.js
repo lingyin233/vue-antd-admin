@@ -222,7 +222,7 @@ const options = {
               path: 'list',
               name: '序列号列表',
               component: () => import('@/pages/serial/List')
-            },
+            },            
           ]
         },
         {
@@ -294,7 +294,22 @@ const options = {
               component: () => import('@/pages/tool/upload')
             },
           ]
-        }
+        },
+        {
+          path: 'other',
+          name: '其他',
+          meta: {
+            icon: 'apple'
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'device/list',
+              name: '其他设备',
+              component: () => import('@/pages/other/deviceList')
+            },
+          ]
+        },
       ]
     }
   ]

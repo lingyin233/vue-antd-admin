@@ -1,5 +1,5 @@
 import userService from './user';
-import deviceService from './device'
+import deviceService from './device';
 
 export {
   userService,
