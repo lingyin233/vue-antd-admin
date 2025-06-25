@@ -45,7 +45,7 @@
         </a-space>
 
         <a-table
-          v-if="list.length > 0"
+           v-show="true" 
           :columns="columns"
           :data-source="list"
           :rowKey="(record) => record.id"
@@ -148,7 +148,7 @@ export default {
         },
         {
           title: "唯一ID",
-          dataIndex: "uniqueId",
+          dataIndex: "uniqueId", 
           key: "uniqueId",
           width: 80,
         },
@@ -276,6 +276,11 @@ export default {
 </script>
 <style scoped lang="less">
 @import "index";
+.new-page{
+  overflow-x: auto;
+  width:100%;  
+  }
+
 .search {
   margin-bottom: 54px;
 }
