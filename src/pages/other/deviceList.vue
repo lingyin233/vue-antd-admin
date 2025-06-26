@@ -44,8 +44,7 @@
           <a-button type="primary" @click="addUI">添加</a-button>
         </a-space>
 
-        <a-table
-           v-show="true" 
+        <a-table           
           :columns="columns"
           :data-source="list"
           :rowKey="(record) => record.id"
@@ -59,6 +58,15 @@
               un-checked-children="禁用"
             />
           </div>
+           <div slot="action" slot-scope="text, record ">
+            <a-popconfirm
+              title="确认删除？"
+              @confirm="del(record)"
+              style="margin: 2px"
+            >
+              <a href="javascript:void(0);" type="primary">删除</a>
+            </a-popconfirm>
+        </div>
         </a-table>
       </div>
     </a-card>
@@ -103,7 +111,7 @@
             un-checked-children="禁用"
             default-checked
           />
-        </a-form-item>
+        </a-form-item>      
       </a-form>
     </a-modal>
   </div>
@@ -114,6 +122,7 @@ import {
   otherDeviceAdd,
   otherDeviceList,
   otherDeviceUpdateStatus,
+  otherDeviceDelete,
 } from "@/services/other";
 import { Modal } from "ant-design-vue";
 import moment from "moment";
@@ -144,7 +153,7 @@ export default {
           title: "ID",
           dataIndex: "id",
           key: "id",
-          width: 80,
+          width: 60,
         },
         {
           title: "唯一ID",
@@ -174,6 +183,13 @@ export default {
             return moment(text).format("YYYY-MM-DD HH:mm");
           },
         },
+        {
+          title: "操作",
+          dataIndex: "action",
+          key: "action",
+          width: 80,
+          scopedSlots: { customRender: "action" },
+        }
       ],
     };
   },
@@ -240,6 +256,18 @@ export default {
           that.addUIVisible = false;
         });
       });     
+    },
+    del(record) {
+      const that = this;
+      otherDeviceDelete({ id: record.id }).then((res) => {
+        const r = res.data;
+        if (r.code !== 200) {
+          return;
+        }
+        that.$message.success("操作成功", 1.5, () => {
+          that.init();
+        });
+      });
     },
     stateChange(checked) {
       this.addUIForm["status"] = checked ? 1 : 0;
