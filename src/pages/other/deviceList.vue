@@ -122,7 +122,7 @@ import {
   otherDeviceAdd,
   otherDeviceList,
   otherDeviceUpdateStatus,
-  delOtherUpdate
+  otherDeviceDelete,
 } from "@/services/other";
 import { Modal } from "ant-design-vue";
 import moment from "moment";
@@ -259,7 +259,7 @@ export default {
     },
     del(record) {
       const that = this;
-      delOtherUpdate({ id: record.id }).then((res) => {
+      otherDeviceDelete({ id: record.id }).then((res) => {
         const r = res.data;
         if (r.code !== 200) {
           return;
