@@ -19,9 +19,9 @@
           <div slot="optGif" slot-scope="{text, record}">
              <img v-if="record.optGif" style="width: 80px; height: 80px;" :src="record.optGif" />
           </div> 
-             <div slot="supportScan" slot-scope="{text}">
-          <a-tag :color="text === '1' ? 'green' : 'orange'">
-           {{ text === '1' ? '支持' : text === '0' ? '不支持' : '未知' }}
+             <div slot="netType" slot-scope="{text}">
+          <a-tag :color="text === '1' ? 'green' :text === '2' ? 'orange': 'red'">
+           {{ text === '1' ? '蓝牙' : text === '2' ? '扫码' : text === '3'? '蓝牙+扫码':'未知' }}
           </a-tag>
           </div>      
            <div slot="status" slot-scope="{ text, record }">
@@ -65,8 +65,8 @@
         <a-form-item name="bleName" label="蓝牙搜索名称" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateForm.bleName" ></a-input>
         </a-form-item>
-         <a-form-item name="supportScan" label="是否支持扫码" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateForm.supportScan" placeholder="请选择" :options="supportScanList" ></a-select>
+         <a-form-item name="netType" label="配网类型" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
+          <a-select v-model:value="updateForm.netType" placeholder="请选择" :options="netTypeList" ></a-select>
         </a-form-item>
         <a-form-item name="optUrl" label=" 配网页面的操作图" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateForm.optUrl" disabled placeholder="请输入" />
@@ -203,7 +203,7 @@ export default {
         icon: '',
         name: '',
         bleName: '',
-        supportScan: '',
+        netType: '',
         optUrl: '',
         optGif: '',
         status:'',
@@ -224,14 +224,18 @@ export default {
           label: "删除"
         }
       ] ,
-      supportScanList:[   
+      netTypeList:[   
         {
           value: "1",
-          label: "支持"
+          label: "蓝牙"
         },
         {
-          value: "0",
-          label: "不支持"
+          value: "2",
+          label: "扫码"
+        },
+        {
+          value: "3",
+          label: "蓝牙+扫码"
         }
       ] ,
       pagination: {
@@ -268,10 +272,10 @@ export default {
           key: 'bleName',         
         },
         {
-          title: '是否支持扫码',
-          dataIndex: 'supportScan',
-          key: 'supportScan',
-          scopedSlots: { customRender: 'supportScan' }
+          title: '配网类型',
+          dataIndex: 'netType',
+          key: 'netType',
+          scopedSlots: { customRender: 'netType' }
         },
         {
           title: '配网页面的操作图',
@@ -496,7 +500,7 @@ export default {
     addUI() {
       this.$util.clearObject(this.updateForm, true);     
       this.updateUIVisible = true;
-      this.updateForm.supportScan = '0';
+      this.updateForm.netType = '1';
       this.updateForm.status = '1';
     },
     updateUI(record, copy) {
@@ -622,7 +626,7 @@ export default {
         icon:record.icon,
         name:record.name,
         bleName:record.bleName,
-        supportScan:record.supportScan,
+        netType:record.netType,
         optUrl:record.optUrl,        
         status:newStatus,
         i18n:record.i18n,        
