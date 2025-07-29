@@ -11,13 +11,13 @@
           :pagination="{ ...pagination, onChange: onPageChange }">
           
           <div slot="icon" slot-scope="{text, record}">
-            <img  v-if="record.icon"  style="width: 50px; height: 80px;" :src="record.icon" />
+            <img  v-if="record.icon"  style="width: 80px; height: 80px;" :src="record.icon" />
           </div>  
           <div slot="optUrl" slot-scope="{text, record}">
-            <img  v-if="record.optUrl"  style="width: 50px; height: 80px;" :src="record.optUrl" />
+            <img  v-if="record.optUrl"  style="width: 80px; height: 80px;" :src="record.optUrl" />
           </div>
           <div slot="optGif" slot-scope="{text, record}">
-             <img v-if="record.optGif" style="width: 50px; height: 80px;" :src="record.optGif" />
+             <img v-if="record.optGif" style="width: 80px; height: 80px;" :src="record.optGif" />
           </div> 
              <div slot="supportScan" slot-scope="{text}">
           <a-tag :color="text === '1' ? 'green' : 'orange'">
@@ -224,11 +224,7 @@ export default {
           label: "删除"
         }
       ] ,
-      supportScanList:[
-        {
-          value: '',
-          label: "请选择"
-        },
+      supportScanList:[   
         {
           value: "1",
           label: "支持"
@@ -498,9 +494,10 @@ export default {
       });
     },
     addUI() {
-      this.$util.clearObject(this.updateForm, true);
-      this.updateForm.type = '1';
+      this.$util.clearObject(this.updateForm, true);     
       this.updateUIVisible = true;
+      this.updateForm.supportScan = '0';
+      this.updateForm.status = '1';
     },
     updateUI(record, copy) {
       const that = this;
