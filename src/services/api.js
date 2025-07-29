@@ -73,5 +73,7 @@ module.exports = {
   OTHER_DEVICE_ADD: `${BASE_URL}/other/device/add`,
   OTHER_DEVICE_LIST: `${BASE_URL}/other/device/list`,
   OTHER_DEVICE_UPDATE_STATUS: `${BASE_URL}/other/device/updateStatus`,
-  OTHER_DEVICE_DELETE:`${BASE_URL}/other/device/del`
+  OTHER_DEVICE_DELETE:`${BASE_URL}/other/device/del`,
+  DEVICE_CATEGORY_LIST:`${BASE_URL}/device/category/list`,
+  DEVICE_CATEGORY_ADDORUPDATE:`${BASE_URL}/device/category/addOrUpdate`
 };

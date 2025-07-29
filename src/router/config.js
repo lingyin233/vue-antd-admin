@@ -222,7 +222,12 @@ const options = {
               path: 'list',
               name: '序列号列表',
               component: () => import('@/pages/serial/List')
-            },            
+            },  
+            {
+              path: 'device/category/list',
+              name: '设备分类管理',
+              component: () => import('@/pages/serial/DeviceCategoryList')
+            },          
           ]
         },
         {
