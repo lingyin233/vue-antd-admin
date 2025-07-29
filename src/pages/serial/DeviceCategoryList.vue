@@ -11,14 +11,19 @@
           :pagination="{ ...pagination, onChange: onPageChange }">
           
           <div slot="icon" slot-scope="{text, record}">
-            <img style="width: 50px; height: 80px;" :src="record.icon" />
+            <img  v-if="record.icon"  style="width: 50px; height: 80px;" :src="record.icon" />
           </div>  
           <div slot="optUrl" slot-scope="{text, record}">
-            <img style="width: 50px; height: 80px;" :src="record.optUrl" />
+            <img  v-if="record.optUrl"  style="width: 50px; height: 80px;" :src="record.optUrl" />
           </div>
           <div slot="optGif" slot-scope="{text, record}">
-             <img style="width: 50px; height: 80px;" :src="record.optGif" />
-          </div>       
+             <img v-if="record.optGif" style="width: 50px; height: 80px;" :src="record.optGif" />
+          </div> 
+             <div slot="supportScan" slot-scope="{text}">
+          <a-tag :color="text === '1' ? 'green' : 'orange'">
+           {{ text === '1' ? '支持' : text === '0' ? '不支持' : '未知' }}
+          </a-tag>
+          </div>      
            <div slot="status" slot-scope="{ text, record }">
             <a-switch :checked="record.status === 1" @change="() => status(record)"
                       checkedChildren="正常"
@@ -61,7 +66,7 @@
           <a-input v-model:value="updateForm.bleName" ></a-input>
         </a-form-item>
          <a-form-item name="supportScan" label="是否支持扫码" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-input v-model:value="updateForm.supportScan" ></a-input>
+          <a-select v-model:value="updateForm.supportScan" placeholder="请选择" :options="supportScanList" ></a-select>
         </a-form-item>
         <a-form-item name="optUrl" label=" 配网页面的操作图" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
           <a-input v-model:value="updateForm.optUrl" disabled placeholder="请输入" />
@@ -80,7 +85,7 @@
           <span>{{ percent3 }}</span>
         </a-form-item>
         <a-form-item name="status" label="状态" :labelCol="{ span: 5 }" :wrapperCol="{ span: 18, offset: 1 }">
-          <a-select v-model:value="updateForm.status" placeholder="请选择" :options="statusList">
+          <a-select v-model:value="updateForm['status']" placeholder="请选择" :options="statusList" >
           </a-select>
         </a-form-item>       
       </a-form>
@@ -176,7 +181,7 @@ import { Modal } from 'ant-design-vue';
 import moment from 'moment';
 import category from '../../services/deviceCategory';
 export default {
-  name: 'AppearanceList',
+  name: 'DeviceCategoryList',
   components: { StandardTable, AppidSelect },
   data() {
     return {
@@ -209,18 +214,28 @@ export default {
         gender: '',
         type: '',
       },     
-      statusList:[
+      statusList:[   
+        {
+          value: "1",
+          label: "正常"
+        },
+        {
+          value: "9",
+          label: "删除"
+        }
+      ] ,
+      supportScanList:[
         {
           value: '',
           label: "请选择"
         },
         {
           value: "1",
-          label: "正常"
+          label: "支持"
         },
         {
-          value: "2",
-          label: "删除"
+          value: "0",
+          label: "不支持"
         }
       ] ,
       pagination: {
@@ -260,6 +275,7 @@ export default {
           title: '是否支持扫码',
           dataIndex: 'supportScan',
           key: 'supportScan',
+          scopedSlots: { customRender: 'supportScan' }
         },
         {
           title: '配网页面的操作图',
@@ -489,12 +505,14 @@ export default {
     updateUI(record, copy) {
       const that = this;
       this.$util.clearObject(this.updateForm, true);
-      this.$util.extend(true, this.updateForm, record);      
+      this.$util.extend(true, this.updateForm, record); 
+      that.updateForm['status'] = that.updateForm['status'] + '';
       if (copy) {
         that.updateForm['id'] = '';
         that.updateForm['optUrl'] = '';
         that.updateForm['icon'] = '';
         that.updateForm['optGif'] = '';
+        that.updateForm['status'] = '';
       }
       this.updateUIVisible = true;
     },
