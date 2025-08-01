@@ -8,15 +8,15 @@ export function delFaq(param) {
 export function listFaq(param) {
   return request(FAQ_LIST, METHOD.GET, param);
 }
-export function faqAddOrUpdate(param) {
+export function addOrUpdateFaq(param) {
   return request(FAQ_ADDORUPDATE, METHOD.POST, param);
 }
-export function updateI18nFAQ(param) {
+export function updateI18nFaq(param) {
   return request(UPDATE_I18N_FAQ, METHOD.POST, param);
 }
 export default {
   listFaq,
   delFaq, 
-  faqAddOrUpdate,
-  updateI18nFAQ,  
+  addOrUpdateFaq,
+  updateI18nFaq,  
 };

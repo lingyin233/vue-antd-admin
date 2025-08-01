@@ -108,7 +108,7 @@
 import StandardTable from '@/components/table/StandardTable';
 import AppidSelect from '@/components/obx/AppidSelect';
 import { mapState } from 'vuex';
-import { listFaq, delFaq,faqAddOrUpdate,updateI18nFAQ ,} from '@/services/faqlist';
+import { listFaq, delFaq,addOrUpdateFaq,updateI18nFaq ,} from '@/services/faqlist';
 import moment from 'moment';
 export default {
   name: 'qalist',
@@ -306,7 +306,7 @@ export default {
           }
         }
       }
-      updateI18nFAQ({
+      updateI18nFaq({
         ...that.i18nUIForm.record,
         id: data.id,
         i18n: JSON.stringify(data.i18n),
@@ -386,7 +386,7 @@ export default {
         appId: this.updateForm.appId, 
         i18n: this.updateForm.i18n
       };    
-      faqAddOrUpdate(submitData).then((res) => {
+      addOrUpdateFaq(submitData).then((res) => {
         const r = res.data;       
         if (r.code !== 200) {
           return;
