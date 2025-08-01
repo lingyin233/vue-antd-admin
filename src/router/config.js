@@ -183,6 +183,11 @@ const options = {
               name: '意见反馈列表',
               component: () => import('@/pages/feedback/List')
             },
+            {
+              path: 'qalist',
+              name: '常见问题',
+              component: () => import('@/pages/feedback/qalist')
+            },
           ]
         },
         {

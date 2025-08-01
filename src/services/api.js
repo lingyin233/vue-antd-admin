@@ -75,5 +75,9 @@ module.exports = {
   OTHER_DEVICE_UPDATE_STATUS: `${BASE_URL}/other/device/updateStatus`,
   OTHER_DEVICE_DELETE:`${BASE_URL}/other/device/del`,
   DEVICE_CATEGORY_LIST:`${BASE_URL}/device/category/list`,
-  DEVICE_CATEGORY_ADDORUPDATE:`${BASE_URL}/device/category/addOrUpdate`
+  DEVICE_CATEGORY_ADDORUPDATE:`${BASE_URL}/device/category/addOrUpdate`,
+  FAQ_DEL:`${BASE_URL}/faq/del`,
+  FAQ_LIST:`${BASE_URL}/faq/list`,
+  FAQ_ADDORUPDATE:`${BASE_URL}/faq/addOrUpdate`,
+  UPDATE_I18N_FAQ:`${BASE_URL}/faq/addOrUpdate`,
 };
