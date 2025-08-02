@@ -79,5 +79,5 @@ module.exports = {
   FAQ_DEL:`${BASE_URL}/faq/del`,
   FAQ_LIST:`${BASE_URL}/faq/list`,
   FAQ_ADDORUPDATE:`${BASE_URL}/faq/addOrUpdate`,
-  UPDATE_I18N_FAQ:`${BASE_URL}/faq/addOrUpdate`,
+  FAQ_UPDATE_I18N:`${BASE_URL}/faq/addOrUpdate`,
 };
