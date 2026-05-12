@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-1
-=======
 # frontend
 
 # npm
@@ -8,4 +5,3 @@
 $ npm install
 $ npm run serve
 ```
->>>>>>> luxirui_dev
