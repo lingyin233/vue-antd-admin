@@ -69,6 +69,11 @@
           <a-select v-model:value="langSelect" @change="(option) => langChange(option)" labelInValue>
             <a-select-option value="">无</a-select-option>
             <a-select-option value="en_GB">英语-英国</a-select-option>
+            <a-select-option value="ru_RU">俄语-俄罗斯</a-select-option>
+            <a-select-option value="es_ES">西班牙语-西班牙</a-select-option>
+            <a-select-option value="de_DE">德语-德国</a-select-option>
+            <a-select-option value="ja_JP">日语-日本</a-select-option>
+            <a-select-option value="zh_TW">繁体中文-台湾</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
